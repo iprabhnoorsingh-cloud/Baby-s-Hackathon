@@ -29,6 +29,16 @@
         <span class="brand-name">BITLING</span>
         <span class="brand-unit">BTL-01</span>
       </a>
+      <button
+        type="button"
+        class="audio-mute-btn"
+        id="audio-mute-toggle"
+        aria-pressed="false"
+        aria-label="Bitling idle audio hum: currently muted. Activate to unmute."
+      >
+        <span class="audio-mute-icon" id="audio-mute-icon" aria-hidden="true">🔇</span>
+        <span class="audio-mute-label" id="audio-mute-label">Sound: OFF</span>
+      </button>
       <nav class="site-nav" aria-label="Primary sections">
         <a href="#character-sheet">Spec</a>
         <a href="#origin-story">Origin</a>
@@ -313,6 +323,7 @@
                   <!-- =========================================
                        LED EYES: 3 Expressions (Happy / Sleepy / Low-Battery)
                        ========================================= -->
+                  <g class="eyes-gaze-tracker" id="bitling-gaze-tracker">
                   <!-- 1. HAPPY EYES (Default) -->
                   <g class="eyes-layer eyes-happy">
                     <!-- Left big soft LED eye -->
@@ -419,6 +430,7 @@
                       stroke-width="4"
                       stroke-linecap="round"
                     />
+                  </g>
                   </g>
 
                   <!-- Left & Right Little Arms with Dirt-Smudged Hands -->
@@ -1041,7 +1053,7 @@
     </section>
 
     <!-- ==========================================
-         3C. SHOWCASE PROJECT 3: SOLAR LOG (SHELL ONLY FOR MILESTONE 1)
+         3C. SHOWCASE PROJECT 3: SOLAR LOG & CHARGE DIAL
          ========================================== -->
     <section id="solar-log" class="section-block solar-log-section" aria-labelledby="solar-log-heading">
       <div class="container">
@@ -1049,20 +1061,58 @@
           <span class="section-kicker">PROJECT 03 // PHOTOVOLTAIC TELEMETRY</span>
           <h2 id="solar-log-heading" class="section-title">Solar Log</h2>
           <p class="section-desc">
-            Rooftop daylight recorder and battery charge diagnostics for Unit BTL-01.
+            Rooftop daylight recorder and primary power bus regulator for Unit BTL-01. Turn
+            Bitling’s charge dial between <strong>Full Charge (Day)</strong> and
+            <strong>Low Battery (Night)</strong>.
           </p>
         </div>
 
-        <!-- Milestone 1 Shell: ready for Milestone 3 day/night battery hookup -->
-        <div class="solar-log-shell">
-          <div class="solar-shell-badge">
-            <span class="shell-dot" aria-hidden="true"></span>
-            <span>SOLAR TELEMETRY SHELL // STANDBY</span>
+        <div class="solar-log-shell solar-dial-console">
+          <div class="dial-control-panel">
+            <div class="solar-shell-badge">
+              <span class="shell-dot" aria-hidden="true"></span>
+              <span id="battery-bus-badge">POWER BUS // FULL CHARGE (DAY)</span>
+            </div>
+
+            <!-- Single Unified Battery / Charge Dial Control -->
+            <button
+              type="button"
+              class="charge-dial-btn"
+              id="battery-dial-btn"
+              role="switch"
+              aria-checked="true"
+              aria-label="Bitling Charge Dial: Full Charge (Day) active. Activate to switch to Low Battery (Night)."
+            >
+              <span class="dial-stop dial-stop-low" aria-hidden="true">LOW BATTERY<small>NIGHT</small></span>
+              <span class="dial-bezel" aria-hidden="true">
+                <span class="dial-knob">
+                  <span class="dial-pointer"></span>
+                  <span class="dial-core-led"></span>
+                </span>
+              </span>
+              <span class="dial-stop dial-stop-full" aria-hidden="true">FULL CHARGE<small>DAY</small></span>
+            </button>
+
+            <p class="solar-shell-note" id="battery-dial-caption">
+              Dial set to <strong>Full Charge (Day)</strong> — sunlit palette, nominal 100% clock
+              speed, upright antenna, and lively 480 Hz breathing hum.
+            </p>
           </div>
-          <p class="solar-shell-note">
-            Photovoltaic sensor array aligned with Rooftop Sector 07. Day/night cycle controls and
-            live battery level telemetry will dock into this module in Milestone 3.
-          </p>
+
+          <dl class="solar-telemetry-strip" aria-label="Live battery state telemetry">
+            <div class="telemetry-item">
+              <dt>Palette &amp; Solar Flux</dt>
+              <dd id="telemetry-solar">Daylight // 940 W/m² Nominal</dd>
+            </div>
+            <div class="telemetry-item">
+              <dt>Clock &amp; Antenna Servo</dt>
+              <dd id="telemetry-clock">100% Speed // 0° Upright</dd>
+            </div>
+            <div class="telemetry-item">
+              <dt>Idle Audio Hum</dt>
+              <dd id="telemetry-audio">Muted (Tap Sound button in header)</dd>
+            </div>
+          </dl>
         </div>
       </div>
     </section>

@@ -432,6 +432,284 @@
   }
 
   initScrollStory();
+
+  /* ==========================================================================
+     4. MILESTONE 3: UNIFIED BATTERY STATE, WEB AUDIO HUM & SCOPED GAZE TRACKING
+     ========================================================================== */
+  const STORAGE_KEY_MUTE = "bitling_sound_muted";
+
+  const dialBtn = document.getElementById("battery-dial-btn");
+  const busBadgeEl = document.getElementById("battery-bus-badge");
+  const dialCaptionEl = document.getElementById("battery-dial-caption");
+  const telemetrySolarEl = document.getElementById("telemetry-solar");
+  const telemetryClockEl = document.getElementById("telemetry-clock");
+  const telemetryAudioEl = document.getElementById("telemetry-audio");
+
+  const muteToggleBtn = document.getElementById("audio-mute-toggle");
+  const muteIconEl = document.getElementById("audio-mute-icon");
+  const muteLabelEl = document.getElementById("audio-mute-label");
+  const gazeTrackerEl = document.getElementById("bitling-gaze-tracker");
+
+  // Single source of truth for Milestone 3 battery state ("full" | "low")
+  let batteryState = document.body.getAttribute("data-battery-state") === "low" ? "low" : "full";
+
+  // Web Audio state: always starts muted/stopped until explicit user gesture
+  let audioCtx = null;
+  let isAudioRunning = false;
+  let breathTimerId = null;
+
+  function readSavedMutePreference() {
+    try {
+      const saved = window.localStorage.getItem(STORAGE_KEY_MUTE);
+      // Default is muted ("true") if never set
+      return saved === null ? true : saved === "true";
+    } catch (_) {
+      return true;
+    }
+  }
+
+  function writeSavedMutePreference(isMuted) {
+    try {
+      window.localStorage.setItem(STORAGE_KEY_MUTE, isMuted ? "true" : "false");
+    } catch (_) {
+      // Ignore storage quota or privacy-mode errors
+    }
+  }
+
+  function updateAudioTelemetryUI() {
+    const savedMuted = readSavedMutePreference();
+
+    if (muteToggleBtn) {
+      muteToggleBtn.classList.toggle("is-unmuted", isAudioRunning);
+      muteToggleBtn.setAttribute("aria-pressed", isAudioRunning ? "true" : "false");
+      muteToggleBtn.setAttribute("data-saved-muted", savedMuted ? "true" : "false");
+      muteToggleBtn.setAttribute(
+        "aria-label",
+        isAudioRunning
+          ? "Bitling idle audio hum is ON. Click to mute sound."
+          : "Bitling idle audio hum is OFF (muted). Click to enable sound."
+      );
+    }
+
+    if (muteIconEl) {
+      muteIconEl.textContent = isAudioRunning ? "🔊" : "🔇";
+    }
+
+    if (muteLabelEl) {
+      muteLabelEl.textContent = isAudioRunning ? "Sound: ON" : "Sound: OFF";
+    }
+
+    if (telemetryAudioEl) {
+      if (!isAudioRunning) {
+        telemetryAudioEl.textContent = "MUTED · STANDBY";
+      } else if (batteryState === "full") {
+        telemetryAudioEl.textContent = "392→523 Hz · 2.2s CYCLE";
+      } else {
+        telemetryAudioEl.textContent = "196→147 Hz · 4.4s LOW";
+      }
+    }
+  }
+
+  function triggerBreathNote() {
+    if (!isAudioRunning || !audioCtx || audioCtx.state !== "running") return;
+
+    const now = audioCtx.currentTime;
+    const isFull = batteryState === "full";
+
+    // Pitch & envelope respond directly to the unified batteryState
+    const startFreq = isFull ? 392.0 : 196.0; // G4 at full charge, G3 at low battery
+    const targetFreq = isFull ? 523.25 : 146.83; // C5 rising chirp vs D3 sleepy droop
+    const noteDuration = isFull ? 0.95 : 1.75;
+    const peakGain = isFull ? 0.045 : 0.032;
+
+    const osc = audioCtx.createOscillator();
+    const filter = audioCtx.createBiquadFilter();
+    const gain = audioCtx.createGain();
+
+    osc.type = isFull ? "triangle" : "sine";
+    osc.frequency.setValueAtTime(startFreq, now);
+    osc.frequency.exponentialRampToValueAtTime(targetFreq, now + noteDuration * 0.68);
+
+    filter.type = "lowpass";
+    filter.frequency.setValueAtTime(isFull ? 1150 : 480, now);
+
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.linearRampToValueAtTime(peakGain, now + noteDuration * 0.28);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + noteDuration);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start(now);
+    osc.stop(now + noteDuration + 0.04);
+  }
+
+  function scheduleAudioLoop() {
+    if (breathTimerId !== null) {
+      window.clearInterval(breathTimerId);
+      breathTimerId = null;
+    }
+    if (!isAudioRunning) return;
+
+    const intervalMs = batteryState === "full" ? 2200 : 4400;
+    triggerBreathNote();
+    breathTimerId = window.setInterval(triggerBreathNote, intervalMs);
+  }
+
+  function startAudioFromUserGesture() {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return;
+
+    if (!audioCtx) {
+      audioCtx = new AudioContextClass();
+    }
+
+    const onRunning = () => {
+      isAudioRunning = true;
+      writeSavedMutePreference(false);
+      updateAudioTelemetryUI();
+      scheduleAudioLoop();
+    };
+
+    if (audioCtx.state === "suspended") {
+      audioCtx
+        .resume()
+        .then(onRunning)
+        .catch(() => {
+          isAudioRunning = false;
+          updateAudioTelemetryUI();
+        });
+    } else {
+      onRunning();
+    }
+  }
+
+  function stopAudio() {
+    isAudioRunning = false;
+    if (breathTimerId !== null) {
+      window.clearInterval(breathTimerId);
+      breathTimerId = null;
+    }
+    if (audioCtx && audioCtx.state === "running") {
+      audioCtx.suspend().catch(() => {});
+    }
+    writeSavedMutePreference(true);
+    updateAudioTelemetryUI();
+  }
+
+  if (muteToggleBtn) {
+    // Initialize mute button UI (always starts OFF / muted before user gesture)
+    updateAudioTelemetryUI();
+
+    muteToggleBtn.addEventListener("click", () => {
+      if (isAudioRunning) {
+        stopAudio();
+      } else {
+        startAudioFromUserGesture();
+      }
+    });
+  }
+
+  function applyBatteryState(nextState) {
+    batteryState = nextState === "low" ? "low" : "full";
+    const isFull = batteryState === "full";
+
+    // 1. Synchronize body attribute (drives palette tokens, eye blink/glow, antenna droop, global speeds)
+    document.body.setAttribute("data-battery-state", batteryState);
+
+    // 2. Synchronize Charge Dial ARIA and telemetry readouts (never overwrites manual visor expression)
+    if (dialBtn) {
+      dialBtn.setAttribute("aria-checked", isFull ? "true" : "false");
+      dialBtn.setAttribute(
+        "aria-label",
+        isFull
+          ? "Bitling Charge Dial: Full Charge (Day mode active). Click to switch to Low Battery (Night mode)."
+          : "Bitling Charge Dial: Low Battery (Night mode active). Click to switch to Full Charge (Day mode)."
+      );
+    }
+
+    if (busBadgeEl) {
+      busBadgeEl.textContent = isFull ? "FULL CHARGE · DAY" : "LOW BATTERY · NIGHT";
+    }
+
+    if (dialCaptionEl) {
+      dialCaptionEl.textContent = isFull
+        ? "Rotary charge bus locked to sunlit peak output. Ambient systems running at 100% clock."
+        : "Reserve night cell engaged. Ambient systems underclocked; antenna drooped and optical LEDs dimmed.";
+    }
+
+    if (telemetrySolarEl) {
+      telemetrySolarEl.textContent = isFull ? "4.2V · PEAK SUN" : "1.8V · RESERVE CELL";
+    }
+
+    if (telemetryClockEl) {
+      telemetryClockEl.textContent = isFull ? "100% · NOMINAL" : "48% · UNDERCLOCKED";
+    }
+
+    // 3. Retune Web Audio loop tempo/pitch if currently unmuted and running
+    updateAudioTelemetryUI();
+    if (isAudioRunning) {
+      scheduleAudioLoop();
+    }
+  }
+
+  if (dialBtn) {
+    dialBtn.addEventListener("click", () => {
+      const nextState = batteryState === "full" ? "low" : "full";
+      applyBatteryState(nextState);
+    });
+  }
+
+  // Ensure initial battery state is synchronized on load
+  applyBatteryState(batteryState);
+
+  /* Scoped Cursor & Touch Gaze Tracking on #bitling-stage */
+  if (stageEl && gazeTrackerEl) {
+    let gazeRafId = null;
+    let pendingClientX = 0;
+    let pendingClientY = 0;
+
+    function updateGazePosition() {
+      gazeRafId = null;
+      const rect = stageEl.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
+
+      const centerX = rect.left + rect.width * 0.5;
+      const centerY = rect.top + rect.height * 0.44;
+
+      const normX = Math.max(-1, Math.min(1, (pendingClientX - centerX) / (rect.width * 0.45)));
+      const normY = Math.max(-1, Math.min(1, (pendingClientY - centerY) / (rect.height * 0.45)));
+
+      // Subtle gaze shift, slightly calmer when running on low battery
+      const scale = batteryState === "low" ? 0.65 : 1.0;
+      const offsetX = (normX * 5.5 * scale).toFixed(2);
+      const offsetY = (normY * 3.8 * scale).toFixed(2);
+
+      gazeTrackerEl.style.setProperty("--gaze-x", `${offsetX}px`);
+      gazeTrackerEl.style.setProperty("--gaze-y", `${offsetY}px`);
+    }
+
+    function onStagePointerMove(event) {
+      pendingClientX = event.clientX;
+      pendingClientY = event.clientY;
+      if (gazeRafId === null) {
+        gazeRafId = window.requestAnimationFrame(updateGazePosition);
+      }
+    }
+
+    function resetGazePosition() {
+      if (gazeRafId !== null) {
+        window.cancelAnimationFrame(gazeRafId);
+        gazeRafId = null;
+      }
+      gazeTrackerEl.style.setProperty("--gaze-x", "0px");
+      gazeTrackerEl.style.setProperty("--gaze-y", "0px");
+    }
+
+    stageEl.addEventListener("pointermove", onStagePointerMove, { passive: true });
+    stageEl.addEventListener("pointerdown", onStagePointerMove, { passive: true });
+    stageEl.addEventListener("pointerleave", resetGazePosition, { passive: true });
+    stageEl.addEventListener("pointercancel", resetGazePosition, { passive: true });
+  }
 })();
-
-

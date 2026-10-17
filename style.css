@@ -76,6 +76,46 @@
   /* 3. Typography Tokens */
   --font-display: "Fredoka", "Trebuchet MS", sans-serif;
   --font-body: "Nunito", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* 4. Centralized Ambient Animation Duration Tokens (Full Charge / Nominal) */
+  --anim-float-dur: 3.4s;
+  --anim-sleepy-float-dur: 5.2s;
+  --anim-bob-dur: 2.6s;
+  --anim-aura-dur: 2.2s;
+  --anim-blink-dur: 4.5s;
+  --anim-flicker-dur: 1.8s;
+  --anim-pulse-dur: 2s;
+}
+
+/* ==========================================================================
+   MILESTONE 3: UNIFIED LOW-BATTERY (NIGHT) PALETTE & UNDERCLOCK TOKENS
+   ========================================================================== */
+body[data-battery-state="low"] {
+  --bg-page: var(--solar-navy-950);
+  --bg-surface: var(--solar-navy-900);
+  --bg-surface-tinted: var(--solar-charcoal-800);
+  --bg-solar-panel: #0a101c;
+  --bg-solar-console: var(--solar-navy-900);
+
+  --text-primary: var(--sunlit-cream-50);
+  --text-secondary: #b0c2de;
+  --text-on-dark: var(--sunlit-cream-50);
+  --text-muted-on-dark: #8ca2c4;
+
+  --border-ink: var(--solar-slate-700);
+  --shadow-tactile: 0 5px 0 #060a12;
+  --shadow-tactile-sm: 0 3px 0 #060a12;
+  --shadow-glow-amber: 0 0 10px rgba(245, 158, 11, 0.28);
+  --shadow-glow-leaf: 0 0 8px rgba(46, 184, 101, 0.22);
+
+  /* Global underclocked animation durations */
+  --anim-float-dur: 7.2s;
+  --anim-sleepy-float-dur: 10.4s;
+  --anim-bob-dur: 5.8s;
+  --anim-aura-dur: 5s;
+  --anim-blink-dur: 9.5s;
+  --anim-flicker-dur: 3.8s;
+  --anim-pulse-dur: 4.8s;
 }
 
 /* ==========================================================================
@@ -103,6 +143,7 @@ body {
   overflow-x: hidden;
   position: relative;
   min-height: 100vh;
+  transition: background-color 0.35s ease, color 0.35s ease;
 }
 
 /* Subtle early-2000s dot/grid rooftop texture */
@@ -143,6 +184,11 @@ button,
   background-color: rgba(252, 249, 242, 0.94);
   backdrop-filter: blur(8px);
   border-bottom: var(--border-width) solid var(--border-ink);
+  transition: background-color 0.35s ease, border-color 0.35s ease;
+}
+
+body[data-battery-state="low"] .site-header {
+  background-color: rgba(13, 21, 36, 0.94);
 }
 
 .header-inner {
@@ -189,6 +235,43 @@ button,
   border-radius: var(--radius-pill);
 }
 
+.audio-mute-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 6px 12px;
+  font-family: var(--font-display);
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--text-on-dark);
+  background-color: var(--solar-charcoal-800);
+  border: 2px solid var(--border-ink);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 2px 0 var(--solar-navy-950);
+  cursor: pointer;
+  transition: transform 0.14s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.audio-mute-btn:hover,
+.audio-mute-btn:focus-visible {
+  transform: translateY(-1px);
+  border-color: var(--amber-glow-400);
+}
+
+.audio-mute-btn.is-unmuted {
+  background-color: var(--leaf-green-500);
+  color: var(--solar-navy-950);
+  border-color: var(--solar-navy-950);
+  box-shadow: 0 2px 0 var(--solar-navy-950), 0 0 10px rgba(82, 214, 129, 0.35);
+}
+
+.audio-mute-icon {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
 .site-nav {
   display: flex;
   align-items: center;
@@ -216,6 +299,7 @@ button,
 .site-nav a:hover,
 .site-nav a:focus-visible {
   background-color: var(--amber-glow-300);
+  color: var(--solar-navy-950);
   border-color: var(--border-ink);
   transform: translateY(-1px);
 }
@@ -255,7 +339,7 @@ button,
   border-radius: 50%;
   background-color: var(--leaf-green-400);
   box-shadow: 0 0 8px var(--leaf-green-400);
-  animation: pulseGlow 2s infinite ease-in-out;
+  animation: pulseGlow var(--anim-pulse-dur) infinite ease-in-out;
 }
 
 .hero-title {
@@ -277,7 +361,7 @@ button,
 .hero-subtitle {
   font-family: var(--font-display);
   font-size: clamp(1.15rem, 2.5vw, 1.45rem);
-  color: var(--solar-slate-700);
+  color: var(--text-secondary);
   font-weight: 600;
   margin-bottom: 16px;
 }
@@ -349,9 +433,14 @@ button,
   transition: transform 0.12s ease, background-color 0.15s ease, box-shadow 0.15s ease;
 }
 
+body[data-battery-state="low"] .expr-btn:not(.is-active) {
+  background-color: var(--bg-surface-alt);
+}
+
 .expr-btn:hover {
   transform: translateY(-2px);
   background-color: var(--amber-glow-100);
+  color: var(--solar-navy-950);
 }
 
 .expr-btn.is-active {
@@ -432,17 +521,23 @@ button,
 
 /* Character SVG Idle & Expression Animations */
 .bitling-body-group {
-  animation: robotFloat 3.4s ease-in-out infinite;
+  animation: robotFloat var(--anim-float-dur) ease-in-out infinite;
   transform-origin: center bottom;
 }
 
 .bitling-antenna {
-  animation: antennaBob 2.6s ease-in-out infinite;
+  animation: antennaBob var(--anim-bob-dur) ease-in-out infinite;
   transform-origin: 160px 74px;
 }
 
 .antenna-aura {
-  animation: pulseGlow 2.2s ease-in-out infinite;
+  animation: pulseGlow var(--anim-aura-dur) ease-in-out infinite;
+}
+
+/* Gaze tracking wrapper (separate from child blink transform) */
+.eyes-gaze-tracker {
+  transform: translate3d(var(--gaze-x, 0px), var(--gaze-y, 0px), 0);
+  transition: transform 0.1s ease-out;
 }
 
 /* Eye Expression Visibility Rules */
@@ -452,7 +547,7 @@ button,
 
 .character-stage[data-expression="happy"] .eyes-happy {
   display: inline;
-  animation: happyBlink 4.5s infinite;
+  animation: happyBlink var(--anim-blink-dur) infinite;
   transform-origin: 160px 142px;
 }
 
@@ -461,12 +556,12 @@ button,
 }
 
 .character-stage[data-expression="sleepy"] .bitling-body-group {
-  animation-duration: 5.2s;
+  animation-duration: var(--anim-sleepy-float-dur);
 }
 
 .character-stage[data-expression="low-battery"] .eyes-low-battery {
   display: inline;
-  animation: lowBatteryFlicker 1.8s infinite;
+  animation: lowBatteryFlicker var(--anim-flicker-dur) infinite;
 }
 
 .character-stage[data-expression="low-battery"] .charge-bar.bar-2,
@@ -475,6 +570,28 @@ button,
 }
 
 .character-stage[data-expression="low-battery"] .charge-bar.bar-1 {
+  fill: var(--amber-glow-500);
+}
+
+/* Global Low-Battery Character Modifiers (preserves manual visor expression) */
+body[data-battery-state="low"] .bitling-antenna {
+  animation-name: antennaDroopBob;
+}
+
+body[data-battery-state="low"] .antenna-aura {
+  opacity: 0.35;
+}
+
+body[data-battery-state="low"] .eyes-gaze-tracker {
+  filter: brightness(0.78) drop-shadow(0 0 3px rgba(245, 158, 11, 0.35));
+}
+
+body[data-battery-state="low"] .charge-bar.bar-2,
+body[data-battery-state="low"] .charge-bar.bar-3 {
+  opacity: 0.22;
+}
+
+body[data-battery-state="low"] .charge-bar.bar-1 {
   fill: var(--amber-glow-500);
 }
 
@@ -573,6 +690,10 @@ button,
   color: var(--terracotta-600);
 }
 
+body[data-battery-state="low"] .spec-label {
+  color: var(--terracotta-400);
+}
+
 .spec-card-tagline .spec-label {
   color: var(--amber-glow-300);
 }
@@ -632,6 +753,10 @@ button,
 .origin-story-section {
   background: linear-gradient(180deg, var(--sunlit-cream-100) 0%, var(--sunlit-sand-200) 50%, var(--sunlit-cream-100) 100%);
   position: relative;
+}
+
+body[data-battery-state="low"] .origin-story-section {
+  background: linear-gradient(180deg, var(--solar-navy-950) 0%, var(--solar-navy-900) 50%, var(--solar-navy-950) 100%);
 }
 
 /* Sticky In-World Charge Bar Progress HUD */
@@ -1275,7 +1400,7 @@ body.js-scroll-ready .memory-chip.is-visible {
 
 .species-code {
   font-family: var(--font-display);
-  color: var(--solar-slate-700);
+  color: var(--text-secondary);
 }
 
 .species-rarity {
@@ -1315,23 +1440,39 @@ body.js-scroll-ready .memory-chip.is-visible {
 }
 
 /* ==========================================================================
-   3C. PROJECT 3: SOLAR LOG (SHELL ONLY FOR MILESTONE 1)
+   3C. PROJECT 3: SOLAR LOG (ROTARY CHARGE DIAL & TELEMETRY)
    ========================================================================== */
 .solar-log-section {
   background-color: var(--bg-page);
 }
 
-.solar-log-shell {
+.solar-dial-console {
   background: linear-gradient(135deg, var(--solar-navy-900) 0%, var(--solar-charcoal-800) 100%);
   color: var(--text-on-dark);
   border: var(--border-width) solid var(--border-ink);
   border-radius: var(--radius-lg);
-  padding: 24px 20px;
-  box-shadow: var(--shadow-tactile-sm);
+  padding: 24px 22px;
+  box-shadow: var(--shadow-tactile);
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 22px;
+  align-items: center;
+}
+
+.dial-control-panel {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  gap: 14px;
+}
+
+.dial-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
   gap: 10px;
+  width: 100%;
 }
 
 .solar-shell-badge {
@@ -1353,13 +1494,201 @@ body.js-scroll-ready .memory-chip.is-visible {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: var(--amber-glow-400);
+  background-color: var(--leaf-green-400);
+  box-shadow: 0 0 8px var(--leaf-green-400);
+}
+
+body[data-battery-state="low"] .shell-dot {
+  background-color: var(--amber-glow-500);
+  box-shadow: 0 0 6px var(--amber-glow-500);
+}
+
+.dial-bus-status {
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--leaf-green-300);
+  background-color: rgba(82, 214, 129, 0.12);
+  border: 1px solid rgba(82, 214, 129, 0.4);
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+}
+
+body[data-battery-state="low"] .dial-bus-status {
+  color: var(--amber-glow-300);
+  background-color: rgba(245, 158, 11, 0.14);
+  border-color: rgba(245, 158, 11, 0.45);
+}
+
+.charge-dial-btn {
+  width: 100%;
+  min-height: 84px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background-color: var(--solar-navy-950);
+  color: var(--text-on-dark);
+  border: 2.5px solid var(--solar-slate-700);
+  border-radius: var(--radius-md);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.45), 0 3px 0 var(--solar-navy-950);
+  cursor: pointer;
+  font-family: var(--font-display);
+  transition: border-color 0.2s ease, transform 0.14s ease, box-shadow 0.2s ease;
+}
+
+.charge-dial-btn:hover,
+.charge-dial-btn:focus-visible {
+  border-color: var(--amber-glow-400);
+  transform: translateY(-1px);
+}
+
+.dial-stop {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  line-height: 1.2;
+  transition: color 0.25s ease, opacity 0.25s ease;
+}
+
+.dial-stop small {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted-on-dark);
+}
+
+.dial-stop-low {
+  text-align: left;
+  color: var(--text-muted-on-dark);
+  opacity: 0.65;
+}
+
+.dial-stop-full {
+  text-align: right;
+  color: var(--amber-glow-300);
+  opacity: 1;
+}
+
+body[data-battery-state="low"] .dial-stop-low {
+  color: var(--amber-glow-400);
+  opacity: 1;
+}
+
+body[data-battery-state="low"] .dial-stop-full {
+  color: var(--text-muted-on-dark);
+  opacity: 0.6;
+}
+
+.dial-bezel {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 35%, var(--solar-slate-700), var(--solar-navy-900));
+  border: 3px solid var(--amber-glow-400);
+  box-shadow: 0 0 14px rgba(255, 194, 51, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+}
+
+body[data-battery-state="low"] .dial-bezel {
+  border-color: var(--terracotta-400);
+  box-shadow: 0 0 10px rgba(242, 132, 92, 0.22);
+}
+
+.dial-knob {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, var(--solar-charcoal-800), var(--solar-navy-950));
+  border: 2px solid var(--sunlit-cream-100);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(38deg);
+  transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+body[data-battery-state="low"] .dial-knob {
+  transform: rotate(-38deg);
+}
+
+.dial-pointer {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 12px;
+  border-radius: 2px;
+  background-color: var(--amber-glow-300);
+  box-shadow: 0 0 6px var(--amber-glow-300);
+}
+
+body[data-battery-state="low"] .dial-pointer {
+  background-color: var(--terracotta-400);
+  box-shadow: 0 0 6px var(--terracotta-400);
+}
+
+.dial-center-cap {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--solar-slate-700);
 }
 
 .solar-shell-note {
-  font-size: 0.96rem;
+  font-size: 0.94rem;
   color: var(--text-muted-on-dark);
   max-width: 60ch;
+}
+
+.solar-telemetry-strip {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: rgba(13, 21, 36, 0.55);
+  border: 2px solid var(--solar-slate-700);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+}
+
+.telemetry-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(203, 213, 225, 0.2);
+}
+
+.telemetry-item:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.telemetry-item dt {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted-on-dark);
+}
+
+.telemetry-item dd {
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--amber-glow-300);
+  text-align: right;
 }
 
 /* ==========================================================================
@@ -1409,6 +1738,16 @@ body.js-scroll-ready .memory-chip.is-visible {
   }
   75% {
     transform: rotate(4deg);
+  }
+}
+
+@keyframes antennaDroopBob {
+  0%,
+  100% {
+    transform: rotate(16deg) translateY(3px);
+  }
+  50% {
+    transform: rotate(21deg) translateY(5px);
   }
 }
 
@@ -1538,7 +1877,10 @@ body.js-scroll-ready .memory-chip.is-visible {
 .garden-console,
 .garden-tile,
 .memory-chip,
-.charge-hud-card {
+.charge-hud-card,
+.solar-dial-console,
+.dial-control-panel,
+.solar-telemetry-strip {
   min-width: 0;
 }
 
@@ -1555,6 +1897,11 @@ body.js-scroll-ready .memory-chip.is-visible {
   .spec-card-wide {
     grid-column: span 1;
   }
+
+  .solar-dial-console {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
 }
 
 @media (max-width: 560px) {
@@ -1569,6 +1916,16 @@ body.js-scroll-ready .memory-chip.is-visible {
     padding-bottom: 8px;
   }
 
+  .brand-badge {
+    font-size: 0.88rem;
+    padding: 5px 10px;
+  }
+
+  .audio-mute-btn {
+    font-size: 0.78rem;
+    padding: 5px 10px;
+  }
+
   .site-nav {
     width: 100%;
     display: grid;
@@ -1576,6 +1933,10 @@ body.js-scroll-ready .memory-chip.is-visible {
     gap: 3px;
     padding-top: 4px;
     border-top: 1.5px dashed rgba(22, 33, 54, 0.18);
+  }
+
+  body[data-battery-state="low"] .site-nav {
+    border-top-color: rgba(203, 213, 225, 0.2);
   }
 
   .site-nav a {
@@ -1786,5 +2147,41 @@ body.js-scroll-ready .memory-chip.is-visible {
 
   .species-gallery {
     grid-template-columns: 1fr;
+  }
+
+  .solar-dial-console {
+    padding: 16px 14px;
+  }
+
+  .charge-dial-btn {
+    padding: 12px 10px;
+    gap: 8px;
+  }
+
+  .dial-stop {
+    font-size: 0.76rem;
+  }
+
+  .dial-stop small {
+    font-size: 0.66rem;
+  }
+
+  .dial-bezel {
+    width: 56px;
+    height: 56px;
+  }
+
+  .dial-knob {
+    width: 38px;
+    height: 38px;
+  }
+
+  .telemetry-item {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .telemetry-item dd {
+    text-align: left;
   }
 }
