@@ -309,4 +309,129 @@
   }
 
   initGardenGrid();
+
+  /* ==========================================================================
+     3. ORIGIN STORY: SCROLL-LINKED CHARGE BAR & SCENE TRANSITION CUES
+     ========================================================================== */
+  const memoryChips = Array.from(document.querySelectorAll(".memory-chip"));
+  const chargeFillEl = document.getElementById("story-charge-fill");
+  const chargeProgressbarEl = document.getElementById("story-charge-progressbar");
+  const chargePercentEl = document.getElementById("charge-percent-value");
+  const chargeFragLabelEl = document.getElementById("charge-fragment-label");
+  const chargeStateTagEl = document.getElementById("charge-state-tag");
+
+  function updateStoryChargeProgress() {
+    if (memoryChips.length === 0) return;
+
+    const viewportFocalY = window.innerHeight * 0.58;
+    const firstRect = memoryChips[0].getBoundingClientRect();
+    const lastRect = memoryChips[memoryChips.length - 1].getBoundingClientRect();
+
+    // Anchor 0% at Fragment 01's reading focal point and 100% at Fragment 05's reading focal point
+    const startY = firstRect.top + firstRect.height * 0.45;
+    const endY = lastRect.top + lastRect.height * 0.35;
+    const totalSpan = Math.max(1, endY - startY);
+
+    const rawRatio = (viewportFocalY - startY) / totalSpan;
+    const clampedRatio = Math.min(1, Math.max(0, rawRatio));
+    const pct = Math.round(clampedRatio * 100);
+
+    if (chargeFillEl) {
+      chargeFillEl.style.setProperty("--story-charge-pct", `${pct}%`);
+    }
+    if (chargeProgressbarEl) {
+      chargeProgressbarEl.setAttribute("aria-valuenow", String(pct));
+    }
+    if (chargePercentEl) {
+      chargePercentEl.textContent = `${pct}%`;
+    }
+
+    if (chargeStateTagEl) {
+      chargeStateTagEl.classList.remove("is-charging", "is-full");
+      if (pct >= 95) {
+        chargeStateTagEl.textContent = "CORE FULL";
+        chargeStateTagEl.classList.add("is-full");
+      } else if (pct >= 15) {
+        chargeStateTagEl.textContent = "SOLAR CHARGING";
+        chargeStateTagEl.classList.add("is-charging");
+      } else {
+        chargeStateTagEl.textContent = "RESERVE LOW";
+      }
+    }
+
+    // Identify the fragment closest to the reading focal point
+    let activeIndex = 0;
+    let minDistance = Infinity;
+    memoryChips.forEach((chip, idx) => {
+      const rect = chip.getBoundingClientRect();
+      const chipCenter = rect.top + rect.height * 0.5;
+      const dist = Math.abs(chipCenter - viewportFocalY);
+      if (dist < minDistance) {
+        minDistance = dist;
+        activeIndex = idx;
+      }
+    });
+
+    memoryChips.forEach((chip, idx) => {
+      chip.classList.toggle("is-active-chip", idx === activeIndex);
+    });
+
+    if (chargeFragLabelEl) {
+      const fragNum = String(activeIndex + 1).padStart(2, "0");
+      chargeFragLabelEl.textContent = `FRAGMENT ${fragNum} / 05`;
+    }
+  }
+
+  function initScrollStory() {
+    if (memoryChips.length === 0) return;
+
+    document.body.classList.add("js-scroll-ready");
+
+    if ("IntersectionObserver" in window) {
+      const sceneObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const chip = entry.target;
+            if (entry.isIntersecting) {
+              chip.classList.add("is-visible");
+              // Trigger brief fade-in / fade-out onomatopoeia cue near the heading
+              chip.classList.remove("cue-animating");
+              void chip.offsetWidth;
+              chip.classList.add("cue-animating");
+            } else {
+              // Reset cue class when scrolled out of view so re-entering replays the cue
+              chip.classList.remove("cue-animating");
+            }
+          });
+        },
+        {
+          threshold: 0.22,
+          rootMargin: "0px 0px -8% 0px"
+        }
+      );
+
+      memoryChips.forEach((chip) => sceneObserver.observe(chip));
+    } else {
+      memoryChips.forEach((chip) => chip.classList.add("is-visible"));
+    }
+
+    let scrollTicking = false;
+    function onScrollOrResize() {
+      if (!scrollTicking) {
+        scrollTicking = true;
+        window.requestAnimationFrame(() => {
+          updateStoryChargeProgress();
+          scrollTicking = false;
+        });
+      }
+    }
+
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize, { passive: true });
+    updateStoryChargeProgress();
+  }
+
+  initScrollStory();
 })();
+
+

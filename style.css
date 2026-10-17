@@ -159,10 +159,11 @@ button,
   display: inline-flex;
   align-items: center;
   gap: 7px;
+  min-height: 44px;
   text-decoration: none;
   color: var(--text-on-dark);
   background-color: var(--bg-solar-panel);
-  padding: 6px 12px;
+  padding: 6px 13px;
   border-radius: var(--radius-pill);
   border: 2px solid var(--border-ink);
   box-shadow: 0 2px 0 var(--terracotta-500);
@@ -196,12 +197,17 @@ button,
 }
 
 .site-nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
   text-decoration: none;
   color: var(--text-primary);
   font-family: var(--font-display);
-  font-size: 0.86rem;
+  font-size: 0.88rem;
   font-weight: 600;
-  padding: 5px 10px;
+  padding: 6px 11px;
   border-radius: var(--radius-pill);
   border: 2px solid transparent;
   transition: background-color 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
@@ -327,6 +333,7 @@ button,
 .expr-btn {
   flex: 1 1 auto;
   min-width: 96px;
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -620,6 +627,348 @@ button,
 }
 
 /* ==========================================================================
+   2B. ORIGIN STORY: 5 RETRIEVED MEMORY-CHIP SCENES & CHARGE BAR HUD
+   ========================================================================== */
+.origin-story-section {
+  background: linear-gradient(180deg, var(--sunlit-cream-100) 0%, var(--sunlit-sand-200) 50%, var(--sunlit-cream-100) 100%);
+  position: relative;
+}
+
+/* Sticky In-World Charge Bar Progress HUD */
+.story-charge-sticky {
+  position: sticky;
+  top: 72px;
+  z-index: 35;
+  margin-bottom: 28px;
+}
+
+.charge-hud-card {
+  background: linear-gradient(135deg, var(--solar-navy-950) 0%, var(--solar-navy-900) 100%);
+  color: var(--text-on-dark);
+  border: var(--border-width) solid var(--border-ink);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  box-shadow: var(--shadow-tactile);
+}
+
+.charge-hud-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.charge-hud-id {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-family: var(--font-display);
+}
+
+.charge-bolt {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background-color: var(--amber-glow-400);
+  color: var(--solar-navy-950);
+  font-size: 0.85rem;
+  box-shadow: var(--shadow-glow-amber);
+}
+
+.charge-hud-title {
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--sunlit-cream-50);
+}
+
+.charge-hud-frag {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background-color: var(--solar-charcoal-800);
+  color: var(--amber-glow-300);
+  border: 1.5px solid var(--solar-slate-700);
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+}
+
+.charge-hud-readout {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+}
+
+.charge-percent {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--amber-glow-300);
+  min-width: 3.2ch;
+  text-align: right;
+}
+
+.charge-state-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background-color: var(--terracotta-600);
+  color: var(--sunlit-cream-50);
+  border: 1.5px solid var(--solar-navy-950);
+}
+
+.charge-state-tag.is-charging {
+  background-color: var(--amber-glow-400);
+  color: var(--solar-navy-950);
+}
+
+.charge-state-tag.is-full {
+  background-color: var(--leaf-green-400);
+  color: var(--solar-navy-950);
+}
+
+/* Physical Battery / Capacitor Bar Assembly */
+.battery-bar-assembly {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.battery-bar-shell {
+  position: relative;
+  flex: 1;
+  height: 22px;
+  background-color: var(--solar-navy-950);
+  border: 2.5px solid var(--solar-slate-700);
+  border-radius: 9px;
+  padding: 2px;
+  overflow: hidden;
+}
+
+.battery-bar-fill {
+  height: 100%;
+  width: var(--story-charge-pct, 0%);
+  border-radius: 5px;
+  background: linear-gradient(
+    90deg,
+    var(--terracotta-400) 0%,
+    var(--amber-glow-500) 35%,
+    var(--amber-glow-400) 75%,
+    var(--amber-glow-300) 100%
+  );
+  box-shadow: var(--shadow-glow-amber);
+  transition: width 0.14s ease-out;
+}
+
+.battery-cell-ticks {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  pointer-events: none;
+}
+
+.battery-cell-ticks span {
+  border-right: 2px solid rgba(13, 21, 36, 0.72);
+}
+
+.battery-cell-ticks span:last-child {
+  border-right: none;
+}
+
+.battery-terminal-nub {
+  width: 7px;
+  height: 12px;
+  background-color: var(--amber-glow-400);
+  border: 2px solid var(--solar-slate-700);
+  border-left: none;
+  border-radius: 0 5px 5px 0;
+  flex-shrink: 0;
+}
+
+/* Memory-Chip Timeline & Retrieved Chip Cards */
+.memory-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.memory-chip {
+  position: relative;
+  background-color: var(--bg-solar-panel);
+  border: var(--border-width) solid var(--border-ink);
+  border-radius: var(--radius-md);
+  padding: 14px 16px 12px;
+  box-shadow: var(--shadow-tactile);
+  min-width: 0;
+}
+
+/* Scroll-triggered entrance animation (IntersectionObserver, no scroll-jacking) */
+body.js-scroll-ready .memory-chip {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.25s ease;
+}
+
+body.js-scroll-ready .memory-chip.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.memory-chip.is-active-chip {
+  border-color: var(--amber-glow-400);
+  box-shadow: 0 5px 0 var(--solar-navy-900), 0 0 0 2px var(--amber-glow-400);
+}
+
+/* Hardware gold contact pins along top edge of memory chip */
+.chip-pins {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.chip-pins span {
+  width: 22px;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--amber-glow-400), var(--terracotta-400));
+  border: 1.5px solid var(--solar-navy-950);
+}
+
+.chip-chrome-header {
+  margin-bottom: 12px;
+}
+
+.chip-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted-on-dark);
+  margin-bottom: 8px;
+}
+
+.chip-crc {
+  color: var(--leaf-green-400);
+  background-color: rgba(82, 214, 129, 0.12);
+  border: 1px solid rgba(82, 214, 129, 0.4);
+  padding: 1px 7px;
+  border-radius: 6px;
+}
+
+/* Onomatopoeia Scene-to-Scene Transition Cue near Heading */
+.memory-cue {
+  display: inline-block;
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--amber-glow-300);
+  background-color: rgba(255, 194, 51, 0.14);
+  border: 1.5px dashed var(--amber-glow-400);
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  margin-bottom: 6px;
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+}
+
+.memory-chip.cue-animating .memory-cue {
+  animation: cueFadeInOut 2.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.fragment-heading {
+  font-size: clamp(1.15rem, 2.6vw, 1.42rem);
+  line-height: 1.25;
+  color: var(--sunlit-cream-50);
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.fragment-code {
+  color: var(--amber-glow-300);
+  font-size: 0.92em;
+  letter-spacing: 0.03em;
+}
+
+.fragment-sep {
+  color: var(--terracotta-400);
+}
+
+.fragment-name {
+  color: var(--sunlit-cream-50);
+}
+
+/* Warm Personal Story Core inside Diagnostic Chip Frame */
+.chip-prose-body {
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  border: 2.5px solid var(--solar-navy-950);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  font-size: 1.02rem;
+  line-height: 1.68;
+}
+
+.chip-prose-body p + p {
+  margin-top: 12px;
+}
+
+/* Scene 2 One-Off Terminal / Log Line Treatment */
+.boot-sequence-log {
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  background-color: var(--solar-navy-950);
+  color: var(--leaf-green-300);
+  border: 2px solid var(--solar-slate-700);
+  border-left: 5px solid var(--amber-glow-400);
+  border-radius: 8px;
+  padding: 10px 12px;
+  box-shadow: inset 0 0 12px rgba(76, 201, 240, 0.08);
+}
+
+.boot-sequence-log::before {
+  content: "> ";
+  color: var(--amber-glow-400);
+}
+
+.chip-chrome-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.73rem;
+  font-weight: 700;
+  color: var(--text-muted-on-dark);
+}
+
+/* ==========================================================================
    3A. PROJECT 1: THE GARDEN GRID
    ========================================================================== */
 .garden-section {
@@ -689,7 +1038,12 @@ button,
 }
 
 .action-btn {
-  padding: 7px 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 8px 14px;
   border-radius: var(--radius-sm);
   border: 2px solid var(--border-ink);
   font-size: 0.86rem;
@@ -1135,6 +1489,44 @@ button,
   }
 }
 
+@keyframes cueFadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  16% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  76% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  body.js-scroll-ready .memory-chip {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .bitling-body-group,
+  .bitling-antenna,
+  .antenna-aura,
+  .pulse-dot {
+    animation: none !important;
+  }
+}
+
 /* ==========================================================================
    RESPONSIVE BREAKPOINTS (INCLUDING 390PX PHONE VIEWPORT)
    ========================================================================== */
@@ -1144,7 +1536,9 @@ button,
 .spec-card,
 .species-card,
 .garden-console,
-.garden-tile {
+.garden-tile,
+.memory-chip,
+.charge-hud-card {
   min-width: 0;
 }
 
@@ -1170,20 +1564,26 @@ button,
 
   .header-inner {
     justify-content: space-between;
-    gap: 8px;
+    gap: 6px;
+    padding-top: 8px;
+    padding-bottom: 8px;
   }
 
   .site-nav {
     width: 100%;
-    justify-content: space-between;
-    gap: 4px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 3px;
     padding-top: 4px;
     border-top: 1.5px dashed rgba(22, 33, 54, 0.18);
   }
 
   .site-nav a {
-    font-size: 0.78rem;
-    padding: 4px 7px;
+    min-height: 44px;
+    min-width: 44px;
+    font-size: 0.76rem;
+    padding: 4px 2px;
+    text-align: center;
   }
 
   .hero-section {
@@ -1212,7 +1612,7 @@ button,
   }
 
   .hero-bio {
-    font-size: 0.95rem;
+    font-size: 0.96rem;
     margin-bottom: 16px;
   }
 
@@ -1227,9 +1627,10 @@ button,
   }
 
   .expr-btn {
-    min-width: 0;
-    padding: 7px 4px;
-    font-size: 0.76rem;
+    min-width: 44px;
+    min-height: 46px;
+    padding: 6px 4px;
+    font-size: 0.78rem;
     flex-direction: column;
     gap: 2px;
   }
@@ -1248,6 +1649,81 @@ button,
 
   .spec-card {
     padding: 14px;
+  }
+
+  /* Scroll Story Mobile Polish (390px) */
+  .story-charge-sticky {
+    top: 118px;
+    margin-bottom: 18px;
+  }
+
+  .charge-hud-card {
+    padding: 8px 11px;
+  }
+
+  .charge-hud-top {
+    flex-wrap: nowrap;
+    gap: 4px;
+    margin-bottom: 6px;
+  }
+
+  .charge-hud-id {
+    flex-wrap: nowrap;
+    gap: 5px;
+  }
+
+  .charge-bolt {
+    width: 20px;
+    height: 20px;
+    font-size: 0.74rem;
+  }
+
+  .charge-hud-title {
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+
+  .charge-hud-frag {
+    font-size: 0.65rem;
+    padding: 1px 6px;
+    white-space: nowrap;
+  }
+
+  .charge-hud-readout {
+    gap: 5px;
+    flex-shrink: 0;
+  }
+
+  .charge-percent {
+    font-size: 0.88rem;
+    min-width: 2.8ch;
+  }
+
+  .charge-state-tag {
+    display: none;
+  }
+
+  .battery-bar-shell {
+    height: 18px;
+  }
+
+  .memory-timeline {
+    gap: 20px;
+  }
+
+  .memory-chip {
+    padding: 12px;
+  }
+
+  .chip-prose-body {
+    padding: 13px 14px;
+    font-size: 0.96rem;
+    line-height: 1.62;
+  }
+
+  .boot-sequence-log {
+    font-size: 0.8rem;
+    padding: 9px 10px;
   }
 
   .garden-console {
@@ -1279,7 +1755,8 @@ button,
 
   .action-btn {
     width: 100%;
-    font-size: 0.78rem;
+    min-height: 44px;
+    font-size: 0.8rem;
     padding: 8px 6px;
   }
 

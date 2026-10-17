@@ -30,8 +30,9 @@
         <span class="brand-unit">BTL-01</span>
       </a>
       <nav class="site-nav" aria-label="Primary sections">
-        <a href="#character-sheet">Spec Sheet</a>
-        <a href="#garden-grid">Garden Grid</a>
+        <a href="#character-sheet">Spec</a>
+        <a href="#origin-story">Origin</a>
+        <a href="#garden-grid">Garden</a>
         <a href="#invented-species">Species</a>
         <a href="#solar-log">Solar Log</a>
       </nav>
@@ -577,6 +578,235 @@
     </section>
 
     <!-- ==========================================
+         2B. ORIGIN STORY: 5 SCROLL-TRIGGERED MEMORY FRAGMENTS
+         ========================================== -->
+    <section id="origin-story" class="section-block origin-story-section" aria-labelledby="origin-heading">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-kicker">EEPROM ARCHIVE // RETRIEVED MEMORY CHIPS</span>
+          <h2 id="origin-heading" class="section-title">Origin Log: From Spare Parts to Sunlight</h2>
+          <p class="section-desc">
+            Five sequential memory fragments recovered from Bitling’s core storage. Scroll down to
+            replay the boot archive and charge Bitling’s reserve cell.
+          </p>
+        </div>
+
+        <!-- In-World Scroll-Linked Charge Bar HUD -->
+        <div class="story-charge-sticky" id="story-charge-hud">
+          <div class="charge-hud-card">
+            <div class="charge-hud-top">
+              <div class="charge-hud-id">
+                <span class="charge-bolt" aria-hidden="true">⚡</span>
+                <span class="charge-hud-title">BITLING CORE CHARGE</span>
+                <span class="charge-hud-frag" id="charge-fragment-label">FRAGMENT 01 / 05</span>
+              </div>
+              <div class="charge-hud-readout" aria-live="polite">
+                <span class="charge-percent" id="charge-percent-value">0%</span>
+                <span class="charge-state-tag" id="charge-state-tag">RESERVE LOW</span>
+              </div>
+            </div>
+
+            <!-- In-World Battery / Capacitor Bar with Terminal Nub -->
+            <div class="battery-bar-assembly">
+              <div
+                class="battery-bar-shell"
+                id="story-charge-progressbar"
+                role="progressbar"
+                aria-label="Bitling memory replay charge level"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+              >
+                <div class="battery-bar-fill" id="story-charge-fill"></div>
+                <!-- 5 internal cell divider ticks -->
+                <div class="battery-cell-ticks" aria-hidden="true">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+              <span class="battery-terminal-nub" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5 Retrieved Memory-Chip Entries -->
+        <div class="memory-timeline" id="memory-timeline">
+          <!-- SCENE 1 -->
+          <article class="memory-chip" data-fragment="1" data-cue="―bzzt, memory loading―">
+            <div class="chip-pins" aria-hidden="true">
+              <span></span><span></span><span></span><span></span>
+            </div>
+            <header class="chip-chrome-header">
+              <div class="chip-meta-row">
+                <span class="chip-addr">ADDR // 0x01A • SHED_BAY_04</span>
+                <span class="chip-crc">CRC: VALID</span>
+              </div>
+              <div class="memory-cue" aria-live="polite">―bzzt, memory loading―</div>
+              <h3 class="fragment-heading">
+                <span class="fragment-code">MEMORY FRAGMENT 01 / 05</span>
+                <span class="fragment-sep" aria-hidden="true">—</span>
+                <span class="fragment-name">Spare Parts</span>
+              </h3>
+            </header>
+            <div class="chip-prose-body">
+              <p>
+                Before Bitling, there was a shed full of garden drones nobody had switched on in
+                years. Rusted treads. Cracked solar panels. Good robots, just — forgotten ones.
+                When the shed's last three drones finally powered down for good, they did one thing
+                first: pooled whatever parts still worked into something new. A smaller body. Two
+                big eyes, because the parts bin only had the soft round kind left. They called it,
+                in their last shared transmission, an "experimental seedling unit." They did not
+                stick around to see what it would do.
+              </p>
+            </div>
+            <footer class="chip-chrome-footer">
+              <span>SECTOR 01 // DONOR UNITS: DRN-01, DRN-02, DRN-03</span>
+              <span>CELL: 00%</span>
+            </footer>
+          </article>
+
+          <!-- SCENE 2 -->
+          <article class="memory-chip" data-fragment="2" data-cue="―bzzt, memory loading―">
+            <div class="chip-pins" aria-hidden="true">
+              <span></span><span></span><span></span><span></span>
+            </div>
+            <header class="chip-chrome-header">
+              <div class="chip-meta-row">
+                <span class="chip-addr">ADDR // 0x02B • OPTIC_INIT</span>
+                <span class="chip-crc">CRC: VALID</span>
+              </div>
+              <div class="memory-cue" aria-live="polite">―bzzt, memory loading―</div>
+              <h3 class="fragment-heading">
+                <span class="fragment-code">MEMORY FRAGMENT 02 / 05</span>
+                <span class="fragment-sep" aria-hidden="true">—</span>
+                <span class="fragment-name">First Spark</span>
+              </h3>
+            </header>
+            <div class="chip-prose-body">
+              <p class="boot-sequence-log">
+                BOOT SEQUENCE: EYES — ONLINE. ANTENNA — WOBBLING, NOMINAL. VOCABULARY — 4 WORDS,
+                LOADING.
+              </p>
+              <p>
+                Bitling's first act in the world was not a word. It was turning its whole body
+                toward the one window with sunlight coming through it, before it could even stand.
+                The first word came a few seconds later, and it was "warm." The second word, said
+                immediately after bumping into a wall, was "ow." Bitling counts this as a
+                successful first day.
+              </p>
+            </div>
+            <footer class="chip-chrome-footer">
+              <span>SECTOR 02 // FIRST PHOTON DETECTED</span>
+              <span>CELL: 25%</span>
+            </footer>
+          </article>
+
+          <!-- SCENE 3 -->
+          <article class="memory-chip" data-fragment="3" data-cue="click, click, click">
+            <div class="chip-pins" aria-hidden="true">
+              <span></span><span></span><span></span><span></span>
+            </div>
+            <header class="chip-chrome-header">
+              <div class="chip-meta-row">
+                <span class="chip-addr">ADDR // 0x03C • PACKET_RX</span>
+                <span class="chip-crc">CRC: VALID</span>
+              </div>
+              <div class="memory-cue" aria-live="polite">click, click, click</div>
+              <h3 class="fragment-heading">
+                <span class="fragment-code">MEMORY FRAGMENT 03 / 05</span>
+                <span class="fragment-sep" aria-hidden="true">—</span>
+                <span class="fragment-name">Three Lessons</span>
+              </h3>
+            </header>
+            <div class="chip-prose-body">
+              <p>
+                The drones weren't fully gone — just low. Each had enough charge left for one
+                lesson, one data packet, before shutting off for the last time. Drone One taught
+                watering: a little, often, never drown a seed that's still deciding. Drone Two
+                taught listening: wilting leaves make a sound, if you hold very still. Drone Three
+                taught charging: face the sun, don't be shy about needing it. Then, one by one —
+                click, click, click — the shed went quiet. Bitling waited for a fourth lesson that
+                never came.
+              </p>
+            </div>
+            <footer class="chip-chrome-footer">
+              <span>SECTOR 03 // 3 OF 3 PACKETS ARCHIVED</span>
+              <span>CELL: 50%</span>
+            </footer>
+          </article>
+
+          <!-- SCENE 4 -->
+          <article class="memory-chip" data-fragment="4" data-cue="...signal steady...">
+            <div class="chip-pins" aria-hidden="true">
+              <span></span><span></span><span></span><span></span>
+            </div>
+            <header class="chip-chrome-header">
+              <div class="chip-meta-row">
+                <span class="chip-addr">ADDR // 0x04D • ROOF_ASCENT</span>
+                <span class="chip-crc">CRC: VALID</span>
+              </div>
+              <div class="memory-cue" aria-live="polite">...signal steady...</div>
+              <h3 class="fragment-heading">
+                <span class="fragment-code">MEMORY FRAGMENT 04 / 05</span>
+                <span class="fragment-sep" aria-hidden="true">—</span>
+                <span class="fragment-name">The Roof, Alone</span>
+              </h3>
+            </header>
+            <div class="chip-prose-body">
+              <p>
+                Bitling found the roof by accident, chasing a stray patch of sunlight up a
+                stairwell. It was bigger and emptier than the shed. No drones. No fourth lesson.
+                Just dead planters, grey sky, and a battery indicator doing something Bitling
+                didn't have a word for yet (it would later learn this feeling is called "nervous").
+                Bitling sat on the ledge until sunset, then did the only thing anyone had actually
+                taught it to do: faced the sun, and waited for morning.
+              </p>
+            </div>
+            <footer class="chip-chrome-footer">
+              <span>SECTOR 04 // NIGHT STANDBY ENGAGED</span>
+              <span>CELL: 75%</span>
+            </footer>
+          </article>
+
+          <!-- SCENE 5 -->
+          <article class="memory-chip" data-fragment="5" data-cue="...warmth locked in • full charge...">
+            <div class="chip-pins" aria-hidden="true">
+              <span></span><span></span><span></span><span></span>
+            </div>
+            <header class="chip-chrome-header">
+              <div class="chip-meta-row">
+                <span class="chip-addr">ADDR // 0x05E • SPROUT_12</span>
+                <span class="chip-crc">CRC: VALID</span>
+              </div>
+              <div class="memory-cue" aria-live="polite">...warmth locked in • full charge...</div>
+              <h3 class="fragment-heading">
+                <span class="fragment-code">MEMORY FRAGMENT 05 / 05</span>
+                <span class="fragment-sep" aria-hidden="true">—</span>
+                <span class="fragment-name">First Bloom</span>
+              </h3>
+            </header>
+            <div class="chip-prose-body">
+              <p>
+                It took eleven tries. On the twelfth, something small and green did not die — it
+                unfurled. Bitling has no memory of deciding to keep going after that. It just did.
+                Every planter on the roof, one at a time, for them — the three drones who spent
+                their last charge making sure something new got to start. Bitling still runs low
+                some days. Bitling still faces the sun anyway. Low battery. Big dreams.
+              </p>
+            </div>
+            <footer class="chip-chrome-footer">
+              <span>SECTOR 05 // PRIMARY DIRECTIVE ACTIVE</span>
+              <span>CELL: 100%</span>
+            </footer>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
          3A. SHOWCASE PROJECT 1: THE GARDEN GRID
          ========================================== -->
     <section id="garden-grid" class="section-block garden-section" aria-labelledby="garden-heading">
@@ -852,3 +1082,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+
