@@ -163,7 +163,14 @@
                 <ellipse cx="160" cy="316" rx="96" ry="14" fill="rgba(15, 23, 38, 0.16)" />
 
                 <!-- Small Antenna -->
-                <g class="bitling-antenna">
+                <g class="bitling-antenna" id="bitling-antenna-target">
+                  <circle
+                    class="antenna-hit-area"
+                    cx="160"
+                    cy="46"
+                    r="34"
+                    fill="transparent"
+                  />
                   <circle
                     class="antenna-aura"
                     cx="160"
@@ -512,6 +519,35 @@
             <p class="stage-caption">
               Tap Bitling for a friendly <em>beep-boop</em> or switch visor moods!
             </p>
+
+            <!-- Hidden Easter Egg Transmission (revealed only after 5s continuous antenna hold) -->
+            <div
+              class="drone-transmission-chip"
+              id="drone-hidden-transmission"
+              role="region"
+              aria-label="Recovered Drone Memory Chip Transmission"
+              aria-live="polite"
+              hidden
+            >
+              <div class="transmission-header">
+                <span class="transmission-code">MEM-CHIP // 433.92 MHz ARCHIVE</span>
+                <button
+                  type="button"
+                  class="transmission-close-btn"
+                  id="drone-transmission-close"
+                  aria-label="Close recovered drone transmission"
+                >
+                  × Close
+                </button>
+              </div>
+              <p class="transmission-meta">
+                FROM: DRONE-01 · DRONE-02 · DRONE-03 [LAST SHARED BUFFER]
+              </p>
+              <p class="transmission-body" id="drone-transmission-text"></p>
+              <p class="transmission-footer">
+                [END CARRIER — CHECKSUM: 0x3D9F — KEEP GROWING]
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -1053,6 +1089,166 @@
     </section>
 
     <!-- ==========================================
+         3B-II. MILESTONE 4 SIDE QUESTS: GARDEN ODOMETER & SEED PACKET GUESTBOOK
+         ========================================== -->
+    <section
+      id="rooftop-side-quests"
+      class="section-block side-quests-section"
+      aria-labelledby="side-quests-heading"
+    >
+      <div class="container">
+        <div class="section-header">
+          <span class="section-kicker">ROOFTOP POTTING BENCH // PERSONAL GARDEN COMPUTER</span>
+          <h2 id="side-quests-heading" class="section-title">Tin Can Gauges &amp; Seed Archive</h2>
+          <p class="section-desc">
+            Two mechanical curiosities bolted to Bitling’s potting bench: a brass watering-can
+            visit odometer and a local tin of visitor seed packets.
+          </p>
+        </div>
+
+        <div class="side-quests-grid">
+          <!-- DELIVERABLE 1: THE GARDEN ODOMETER -->
+          <article class="odometer-console-card" aria-labelledby="odometer-heading">
+            <div class="odo-card-top">
+              <span class="odo-hardware-tag">GAUGE // WC-04 HYDRO-COUNTER</span>
+              <span class="odo-local-pill">LOCAL DEVICE MEMORY</span>
+            </div>
+
+            <div class="odo-main-display">
+              <!-- Pixel-art Watering Can Silhouette SVG -->
+              <div class="odo-watering-can" aria-hidden="true">
+                <svg
+                  class="watering-can-svg"
+                  viewBox="0 0 24 20"
+                  shape-rendering="crispEdges"
+                >
+                  <!-- Handle -->
+                  <rect x="2" y="5" width="3" height="2" fill="#e77c5a" />
+                  <rect x="1" y="7" width="2" height="6" fill="#e77c5a" />
+                  <rect x="2" y="13" width="3" height="2" fill="#d45d3a" />
+                  <!-- Can Reservoir Body -->
+                  <rect x="5" y="6" width="10" height="10" fill="#ffc233" />
+                  <rect x="6" y="4" width="8" height="2" fill="#ffe082" />
+                  <rect x="5" y="14" width="10" height="2" fill="#d99b16" />
+                  <!-- Brass Rivet Strip -->
+                  <rect x="7" y="9" width="6" height="2" fill="#162136" />
+                  <rect x="8" y="9" width="2" height="2" fill="#52d681" />
+                  <!-- Spout & Rose Sprinkler Head -->
+                  <rect x="15" y="10" width="2" height="2" fill="#ffc233" />
+                  <rect x="17" y="8" width="2" height="2" fill="#ffc233" />
+                  <rect x="19" y="6" width="2" height="3" fill="#e77c5a" />
+                  <!-- Dripping Pixel Dewdrops -->
+                  <rect class="can-drip drip-1" x="21" y="10" width="1" height="2" fill="#4cc9f0" />
+                  <rect class="can-drip drip-2" x="22" y="13" width="1" height="2" fill="#4cc9f0" />
+                  <rect class="can-drip drip-3" x="20" y="15" width="1" height="2" fill="#4cc9f0" />
+                </svg>
+              </div>
+
+              <div class="odo-readout-block">
+                <h3 id="odometer-heading" class="odo-label">GARDEN VISITS LOGGED</h3>
+                <div
+                  class="odo-wheel-housing"
+                  id="odometer-wheels"
+                  role="status"
+                  aria-live="polite"
+                  aria-label="Garden visits logged on this device: 1"
+                >
+                  <span class="odo-wheel" aria-hidden="true">0</span>
+                  <span class="odo-wheel" aria-hidden="true">0</span>
+                  <span class="odo-wheel" aria-hidden="true">0</span>
+                  <span class="odo-wheel" aria-hidden="true">0</span>
+                  <span class="odo-wheel is-ones" aria-hidden="true">1</span>
+                </div>
+                <p class="odo-chirp-line" id="odometer-chirp">
+                  <em>*drip-click*</em> another garden visit.
+                </p>
+              </div>
+            </div>
+
+            <!-- Tactile Soil-Moisture Meter Strip -->
+            <div class="odo-moisture-meter" aria-hidden="true">
+              <div class="moisture-meter-labels">
+                <span>SOIL MOISTURE DRUM</span>
+                <span id="odometer-moisture-label">DEW LEVEL: NOMINAL</span>
+              </div>
+              <div class="moisture-meter-track">
+                <div class="moisture-meter-fill" id="odometer-moisture-fill"></div>
+              </div>
+            </div>
+
+            <p class="odo-disclosure" id="odometer-disclosure">
+              <strong>Local-only counter:</strong> Stored strictly in this browser on your device
+              (<code>localStorage</code>) and incremented once per page load. This is not a global
+              visitor count across all devices.
+            </p>
+          </article>
+
+          <!-- DELIVERABLE 2: LEAVE BITLING A SEED PACKET -->
+          <article class="seed-guestbook-card" aria-labelledby="seed-packet-heading">
+            <div class="seed-card-top">
+              <span class="seed-hardware-tag">ARCHIVE TIN // PKT-LOG 09</span>
+              <span class="seed-count-pill" id="seed-packet-total-badge">0 PACKETS IN TIN</span>
+            </div>
+
+            <h3 id="seed-packet-heading" class="seed-card-title">Leave Bitling a Seed Packet</h3>
+            <p class="seed-disclosure">
+              Tuck a short note into a paper seed envelope to sprout a tiny pixel-art flower!
+              <strong>Local-only storage:</strong> Notes are saved only on this device in your
+              browser and are never shared or visible to other visitors.
+            </p>
+
+            <form id="seed-packet-form" class="seed-packet-form" novalidate>
+              <div class="seed-label-row">
+                <label for="seed-packet-input" class="seed-input-label">
+                  Seed Envelope Note (max 140 chars):
+                </label>
+                <span class="seed-char-counter" id="seed-char-count" aria-live="polite">
+                  0 / 140
+                </span>
+              </div>
+
+              <textarea
+                id="seed-packet-input"
+                class="seed-packet-textarea"
+                name="seedMessage"
+                rows="2"
+                maxlength="140"
+                required
+                placeholder="e.g., Keep facing the sun, little robot! Remember to water the corners."
+                aria-describedby="seed-char-count seed-packet-feedback"
+              ></textarea>
+
+              <div class="seed-form-actions">
+                <button type="submit" class="seed-submit-btn" id="seed-packet-submit">
+                  <span aria-hidden="true">🌱</span> Open &amp; Plant Seed Packet
+                </button>
+              </div>
+
+              <p
+                class="seed-feedback-msg"
+                id="seed-packet-feedback"
+                role="status"
+                aria-live="polite"
+              ></p>
+            </form>
+
+            <div class="seed-shelf-header">
+              <span class="seed-shelf-title">SPROUTED SEED PACKETS (THIS DEVICE)</span>
+              <span class="seed-shelf-limit">RETAINS LATEST 20</span>
+            </div>
+
+            <div
+              class="seed-packet-shelf"
+              id="seed-packet-list"
+              role="region"
+              aria-label="Planted visitor seed packets stored on this device"
+            ></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
          3C. SHOWCASE PROJECT 3: SOLAR LOG & CHARGE DIAL
          ========================================== -->
     <section id="solar-log" class="section-block solar-log-section" aria-labelledby="solar-log-heading">
@@ -1116,15 +1312,308 @@
         </div>
       </div>
     </section>
+
+    <!-- ==========================================
+         4. MILESTONE 5: FINAL SOLAR LOG ENTRY, BUILD STORY & CREDITS
+         ========================================== -->
+    <section
+      id="final-solar-log"
+      class="section-block final-solar-log-section"
+      aria-labelledby="final-log-heading"
+    >
+      <div class="container">
+        <div class="section-header final-log-header">
+          <span class="section-kicker">LOG ENTRY 99 // DUSK HORIZON PROTOCOL</span>
+          <h2 id="final-log-heading" class="section-title">FINAL SOLAR LOG ENTRY</h2>
+          <p class="section-desc">
+            Last rooftop telemetry packet recorded before Unit BTL-01 curls up beside the planter
+            boxes and rests until dawn.
+          </p>
+        </div>
+
+        <div class="final-log-console is-settled" id="final-log-console">
+          <!-- A. Restrained Shutdown Sequence & Dusk Status Bar -->
+          <div class="shutdown-sequence-panel" aria-label="Bitling evening rest sequence">
+            <div class="shutdown-top-bar">
+              <span class="shutdown-chip-tag">SYS-LOG // NIGHT_STANDBY.EXE</span>
+              <span class="shutdown-status-pill" id="final-log-status-pill">
+                <span class="shutdown-amber-dot" aria-hidden="true"></span>
+                <span id="final-log-status-text">RESERVE CELL DIMMING // 06% STANDBY</span>
+              </span>
+            </div>
+
+            <div class="shutdown-stage-grid">
+              <!-- Miniature Resting Bitling Silhouette SVG -->
+              <div class="resting-bitling-frame" aria-hidden="true">
+                <svg
+                  class="resting-bitling-svg"
+                  viewBox="0 0 180 120"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <!-- Night stars -->
+                  <circle class="dusk-star star-1" cx="26" cy="22" r="1.8" fill="#ffe082" />
+                  <circle class="dusk-star star-2" cx="150" cy="18" r="1.6" fill="#ffe082" />
+                  <circle class="dusk-star star-3" cx="118" cy="30" r="1.3" fill="#4cc9f0" />
+                  <!-- Rooftop parapet ledge -->
+                  <rect x="10" y="98" width="160" height="8" rx="4" fill="#0d1524" />
+
+                  <!-- Settling Bitling Group -->
+                  <g class="resting-unit-group">
+                    <!-- Drooped resting antenna -->
+                    <g class="resting-antenna">
+                      <path
+                        d="M78 44 Q92 31 104 42"
+                        fill="none"
+                        stroke="#334768"
+                        stroke-width="4"
+                        stroke-linecap="round"
+                      />
+                      <circle
+                        class="resting-antenna-bulb"
+                        cx="106"
+                        cy="43"
+                        r="6"
+                        fill="#f59e0b"
+                        stroke="#0d1524"
+                        stroke-width="2"
+                      />
+                    </g>
+                    <!-- Settled rounded robot chassis -->
+                    <rect
+                      class="resting-chassis"
+                      x="42"
+                      y="44"
+                      width="72"
+                      height="54"
+                      rx="24"
+                      fill="#d2c2a3"
+                      stroke="#0d1524"
+                      stroke-width="3"
+                    />
+                    <!-- Solar cap rim -->
+                    <path
+                      d="M52 50 Q78 40 104 50"
+                      fill="none"
+                      stroke="#22304a"
+                      stroke-width="4"
+                      stroke-linecap="round"
+                    />
+                    <!-- Dark visor with peaceful closed amber eyes -->
+                    <rect
+                      x="52"
+                      y="54"
+                      width="52"
+                      height="30"
+                      rx="14"
+                      fill="#0a101c"
+                      stroke="#22304a"
+                      stroke-width="2"
+                    />
+                    <path
+                      class="resting-eye"
+                      d="M60 69 Q66 75 72 69"
+                      fill="none"
+                      stroke="#f59e0b"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                    />
+                    <path
+                      class="resting-eye"
+                      d="M84 69 Q90 75 96 69"
+                      fill="none"
+                      stroke="#f59e0b"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                    />
+                    <!-- Little smudged mitten hand resting on knee -->
+                    <circle
+                      cx="108"
+                      cy="86"
+                      r="8"
+                      fill="#fcf9f2"
+                      stroke="#0d1524"
+                      stroke-width="2.5"
+                    />
+                    <ellipse cx="109" cy="87" rx="4" ry="2.5" fill="#6b4c3b" opacity="0.85" />
+                  </g>
+
+                  <!-- Cozy terracotta pot beside Bitling -->
+                  <rect x="124" y="76" width="22" height="6" rx="2" fill="#e77c5a" />
+                  <polygon points="126,82 144,82 141,98 129,98" fill="#b24324" />
+                  <!-- Pixel sprout glowing softly at dusk -->
+                  <rect x="133" y="66" width="4" height="10" fill="#2eb865" />
+                  <rect x="127" y="64" width="6" height="4" rx="1" fill="#52d681" />
+                  <rect x="137" y="62" width="6" height="4" rx="1" fill="#52d681" />
+                  <circle class="resting-sprout-glow" cx="135" cy="61" r="3" fill="#ffe082" />
+                </svg>
+              </div>
+
+              <!-- Shutdown Readout & Dimming Charge Indicator -->
+              <div class="shutdown-readout-col">
+                <div class="shutdown-meter-row">
+                  <span class="shutdown-meter-label">AMBER CHARGE INDICATOR</span>
+                  <span class="shutdown-meter-val" id="final-log-charge-val">
+                    DIMMED // NIGHT RESERVE (06%)
+                  </span>
+                </div>
+                <div
+                  class="shutdown-charge-track"
+                  role="img"
+                  aria-label="Amber charge indicator dimmed for night standby"
+                >
+                  <div class="shutdown-charge-fill" id="final-log-charge-fill"></div>
+                </div>
+
+                <p class="shutdown-monologue">
+                  <em>*Soft whirrr... click.*</em> All nine terracotta plots are tucked in for the
+                  evening. Optical sensors dimming to preserve reserve capacitor warmth. Solar
+                  panels angled east toward tomorrow’s first roof beam.
+                </p>
+
+                <!-- Required Goodnight Cue -->
+                <div
+                  class="goodnight-cue-box"
+                  id="final-log-goodnight-cue"
+                  role="status"
+                  aria-live="polite"
+                >
+                  <span class="goodnight-prompt" aria-hidden="true">&gt;_</span>
+                  <span class="goodnight-text" id="final-log-goodnight-text">
+                    goodnight... see you at sunrise ☀
+                  </span>
+                </div>
+
+                <div class="shutdown-actions">
+                  <button
+                    type="button"
+                    class="shutdown-replay-btn"
+                    id="final-log-replay-btn"
+                    aria-label="Replay Bitling's evening settle-down sequence"
+                  >
+                    <span aria-hidden="true">🌙</span> Replay Dusk Settle Sequence
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- B. Deliverable 2 & 3: Story Behind the Build + Credits -->
+          <div class="final-log-lower-grid">
+            <!-- Deliverable 2: Story Behind the Build -->
+            <article class="build-story-chip" aria-labelledby="build-story-heading">
+              <div class="chip-pins" aria-hidden="true">
+                <span></span><span></span><span></span><span></span>
+              </div>
+              <header class="build-story-header">
+                <span class="build-story-addr">MEM-CHIP 0x06F // FIELD NOTE</span>
+                <h3 id="build-story-heading" class="build-story-title">
+                  Story Behind the Build
+                </h3>
+              </header>
+              <div class="build-story-prose">
+                <p>
+                  <em>*Bip-boop!*</em> Why build a tiny solar gardener out of spare parts? Bitling
+                  began with a quiet question: what happens when three forgotten garden drones in an
+                  old shed pool their last working cells, a cracked solar cap, and two soft round
+                  LED eyes so something new can reach the sunlight? Even when your battery is small
+                  and your hands carry a little rust, you can still nurture a forgotten corner of
+                  the roof—one seed, one drop of water, and one morning sunbeam at a time.
+                </p>
+                <p>
+                  Every system on this rooftop console was wired to express that idea. Scrolling
+                  through the five recovered EEPROM memory chips charges Bitling’s reserve bar
+                  alongside its origin story. In the 3×3 terracotta Garden Grid, patient taps coax
+                  pixel seeds into Volt-Daisies and Lantern-Berries. Turning the Solar Log’s rotary
+                  Charge Dial shifts the entire world between sunlit Full Charge and underclocked
+                  Low-Battery night mode—slowing ambient animations, drooping Bitling’s antenna, and
+                  retuning the gesture-gated Web Audio breathing hum. Over on the potting bench, a
+                  local watering-can visit odometer, a tin of browser-saved visitor seed packets,
+                  and a hidden 5-second antenna transmission reward unhurried curiosity.
+                </p>
+                <p>
+                  Built from scratch as a 100% original character entry for the 48-hour
+                  <strong>haX.baby (“Baby’s First Website”, Track 2)</strong> hackathon, this site
+                  is crafted purely with plain HTML, CSS, and vanilla JavaScript—no frameworks, no
+                  build step, and no external images—so Bitling’s garden runs anywhere from a 390px
+                  pocket screen to a desktop browser.
+                </p>
+              </div>
+            </article>
+
+            <!-- Deliverable 3: Compact, Accessible Credits Area -->
+            <aside class="final-credits-card" aria-labelledby="final-credits-heading">
+              <header class="final-credits-header">
+                <span class="credits-code">ROM // MANIFEST &amp; CREDITS</span>
+                <h3 id="final-credits-heading" class="final-credits-title">
+                  Unit Fabrication &amp; Credits
+                </h3>
+              </header>
+
+              <dl class="credits-list">
+                <div class="credit-row">
+                  <dt>Creator / Builder</dt>
+                  <!-- Editable Creator Placeholder: replace text below with your name or handle -->
+                  <dd id="creator-credit-value" class="credit-editable-placeholder">
+                    Prabhnoor Singh · @Prabhnoor5803
+                  </dd>
+                </div>
+
+                <div class="credit-row">
+                  <dt>Project</dt>
+                  <dd>Bitling — The Baby Robot Gardener</dd>
+                </div>
+
+                <div class="credit-row">
+                  <dt>Event</dt>
+                  <dd>haX.baby, Track 2 — Baby’s First Website</dd>
+                </div>
+
+                <div class="credit-row">
+                  <dt>Technology</dt>
+                  <dd>HTML, CSS, and vanilla JavaScript (Zero build step)</dd>
+                </div>
+
+                <div class="credit-row">
+                  <dt>AI-Assisted Dev</dt>
+                  <dd>
+                    Antigravity with Gemini 4 Argon (implementation) &amp; Gemini 3.8 Flash
+                    (independent testing)
+                  </dd>
+                </div>
+
+                <div class="credit-row">
+                  <dt>Art, Audio &amp; Fonts</dt>
+                  <dd>
+                    Original inline SVG &amp; coordinate pixel art; procedural Web Audio API synth;
+                    <em>Fredoka</em> &amp; <em>Nunito</em> via Google Fonts
+                  </dd>
+                </div>
+              </dl>
+            </aside>
+          </div>
+
+          <!-- D. Prominent Final Emotional Line inside the Final Solar Log Entry -->
+          <div class="final-log-signoff">
+            <p class="final-signoff-telemetry">
+              [LOG 99 SEALED // NIGHT STANDBY ENGAGED • FACING EAST FOR SUNRISE]
+            </p>
+            <p class="final-emotional-line" id="final-emotional-line">
+              “Low battery. Big dreams.”
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <p class="footer-brand">
-        <strong>Bitling (Unit BTL-01)</strong> — “Low battery. Big dreams.”
-      </p>
       <p class="footer-meta">
-        Crafted for haX.baby’s <em>Baby’s First Website</em> Hackathon • Track 2 Original Character
+        <strong>Bitling (Unit BTL-01)</strong> • Crafted for haX.baby’s
+        <em>Baby’s First Website</em> Hackathon • Track 2 Original Character
+      </p>
+      <p class="footer-brand">
+        <strong>“Low battery. Big dreams.”</strong>
       </p>
     </div>
   </footer>

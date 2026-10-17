@@ -607,12 +607,96 @@ body[data-battery-state="low"] .charge-bar.bar-1 {
   opacity: 0.92;
 }
 
+.character-stage.is-holding-antenna .antenna-bulb {
+  fill: var(--leaf-green-400);
+  filter: drop-shadow(0 0 8px rgba(82, 214, 129, 0.95));
+  transition: fill 0.25s ease, filter 0.25s ease;
+}
+
+.drone-transmission-chip {
+  margin-top: 12px;
+  text-align: left;
+  background-color: var(--solar-navy-950);
+  border: 2px solid var(--amber-glow-400);
+  border-left: 5px solid var(--leaf-green-400);
+  border-radius: var(--radius-sm);
+  padding: 12px 13px;
+  box-shadow: inset 0 0 14px rgba(76, 201, 240, 0.1), 0 4px 0 rgba(6, 10, 18, 0.7);
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.drone-transmission-chip[hidden] {
+  display: none !important;
+}
+
+.transmission-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.transmission-code {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--amber-glow-300);
+}
+
+.transmission-close-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 4px 10px;
+  font-family: var(--font-display);
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--sunlit-cream-50);
+  background-color: var(--solar-charcoal-800);
+  border: 1.5px solid var(--solar-slate-700);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+}
+
+.transmission-close-btn:hover,
+.transmission-close-btn:focus-visible {
+  border-color: var(--amber-glow-400);
+  color: var(--amber-glow-300);
+}
+
+.transmission-meta {
+  font-size: 0.71rem;
+  font-weight: 700;
+  color: var(--text-muted-on-dark);
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed rgba(203, 213, 225, 0.25);
+}
+
+.transmission-body {
+  font-size: 0.82rem;
+  line-height: 1.52;
+  color: var(--leaf-green-300);
+  margin-bottom: 8px;
+}
+
+.transmission-footer {
+  font-size: 0.69rem;
+  font-weight: 700;
+  color: var(--amber-glow-400);
+  letter-spacing: 0.03em;
+}
+
 /* ==========================================================================
    SHARED SECTION LAYOUT
    ========================================================================== */
 .section-block {
   padding: 44px 0;
   border-top: var(--border-width) solid var(--border-ink);
+  scroll-margin-top: 76px;
 }
 
 .section-header {
@@ -1440,6 +1524,464 @@ body.js-scroll-ready .memory-chip.is-visible {
 }
 
 /* ==========================================================================
+   3B-II. MILESTONE 4 SIDE QUESTS: GARDEN ODOMETER & SEED PACKET GUESTBOOK
+   ========================================================================== */
+.side-quests-section {
+  background-color: var(--bg-page);
+}
+
+.side-quests-grid {
+  display: grid;
+  grid-template-columns: 0.92fr 1.08fr;
+  gap: 22px;
+  align-items: start;
+}
+
+/* Deliverable 1: The Garden Odometer */
+.odometer-console-card {
+  background: linear-gradient(155deg, var(--solar-navy-900) 0%, var(--solar-charcoal-800) 100%);
+  color: var(--text-on-dark);
+  border: var(--border-width) solid var(--border-ink);
+  border-radius: var(--radius-lg);
+  padding: 20px 18px;
+  box-shadow: var(--shadow-tactile);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.odo-card-top,
+.seed-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.odo-hardware-tag {
+  color: var(--amber-glow-300);
+}
+
+.odo-local-pill {
+  color: var(--leaf-green-300);
+  background-color: rgba(82, 214, 129, 0.14);
+  border: 1px solid rgba(82, 214, 129, 0.45);
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+}
+
+.odo-main-display {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background-color: var(--solar-navy-950);
+  border: 2.5px solid var(--solar-slate-700);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.odo-watering-can {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  background: radial-gradient(circle at 50% 40%, var(--solar-charcoal-800), var(--solar-navy-950));
+  border: 2px solid var(--terracotta-400);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+.watering-can-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.4));
+}
+
+.can-drip {
+  animation: pulseGlow var(--anim-pulse-dur) infinite ease-in-out;
+}
+
+.can-drip.drip-2 {
+  animation-delay: 0.4s;
+}
+
+.can-drip.drip-3 {
+  animation-delay: 0.8s;
+}
+
+.odo-readout-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  flex: 1;
+}
+
+.odo-label {
+  font-family: var(--font-display);
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--amber-glow-300);
+  text-transform: uppercase;
+}
+
+.odo-wheel-housing {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #070b14;
+  border: 2px solid var(--amber-glow-400);
+  border-radius: 10px;
+  padding: 5px 7px;
+  width: fit-content;
+  max-width: 100%;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.75);
+}
+
+.odo-wheel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 36px;
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--sunlit-cream-50);
+  background: linear-gradient(
+    180deg,
+    #111a2e 0%,
+    #243556 48%,
+    #162136 52%,
+    #0b111e 100%
+  );
+  border: 1.5px solid var(--solar-slate-700);
+  border-radius: 5px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.odo-wheel.is-ones {
+  color: var(--amber-glow-300);
+  border-color: var(--terracotta-400);
+}
+
+.odo-chirp-line {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  color: var(--leaf-green-300);
+}
+
+.odo-moisture-meter {
+  background-color: rgba(13, 21, 36, 0.6);
+  border: 1.5px solid var(--solar-slate-700);
+  border-radius: var(--radius-sm);
+  padding: 9px 11px;
+}
+
+.moisture-meter-labels {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-muted-on-dark);
+  margin-bottom: 5px;
+}
+
+.moisture-meter-track {
+  height: 10px;
+  background-color: var(--solar-navy-950);
+  border: 1.5px solid var(--solar-slate-700);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  padding: 1px;
+}
+
+.moisture-meter-fill {
+  height: 100%;
+  width: 42%;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--terracotta-400) 0%, var(--amber-glow-400) 50%, var(--leaf-green-400) 100%);
+  transition: width 0.35s ease;
+}
+
+.odo-disclosure {
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--text-muted-on-dark);
+  background-color: rgba(13, 21, 36, 0.45);
+  border-left: 3px solid var(--amber-glow-400);
+  padding: 7px 10px;
+  border-radius: 0 8px 8px 0;
+}
+
+/* Deliverable 2: Leave Bitling a Seed Packet */
+.seed-guestbook-card {
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  border: var(--border-width) solid var(--border-ink);
+  border-radius: var(--radius-lg);
+  padding: 20px 18px;
+  box-shadow: var(--shadow-tactile);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.seed-hardware-tag {
+  color: var(--text-secondary);
+}
+
+.seed-count-pill {
+  background-color: var(--amber-glow-300);
+  color: var(--solar-navy-950);
+  border: 1.5px solid var(--border-ink);
+  padding: 2px 9px;
+  border-radius: var(--radius-pill);
+}
+
+.seed-card-title {
+  font-size: 1.4rem;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.seed-disclosure {
+  font-size: 0.88rem;
+  line-height: 1.48;
+  color: var(--text-secondary);
+}
+
+.seed-packet-form {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  background-color: var(--bg-page);
+  border: 2px solid var(--border-ink);
+  border-radius: var(--radius-md);
+  padding: 12px;
+}
+
+.seed-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.seed-input-label {
+  font-family: var(--font-display);
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.seed-char-counter {
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.seed-char-counter.is-near-limit {
+  color: var(--terracotta-500);
+}
+
+.seed-packet-textarea {
+  width: 100%;
+  min-height: 68px;
+  padding: 9px 11px;
+  font-family: var(--font-body);
+  font-size: 0.94rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  background-color: var(--bg-surface);
+  border: 2px solid var(--border-ink);
+  border-radius: var(--radius-sm);
+  resize: vertical;
+}
+
+.seed-packet-textarea:focus-visible {
+  outline: 3px solid var(--amber-glow-400);
+  outline-offset: 1px;
+}
+
+.seed-form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.seed-submit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 9px 16px;
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--solar-navy-950);
+  background-color: var(--leaf-green-400);
+  border: 2.5px solid var(--border-ink);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 3px 0 var(--border-ink);
+  cursor: pointer;
+  transition: transform 0.14s ease, background-color 0.15s ease;
+}
+
+.seed-submit-btn:hover,
+.seed-submit-btn:focus-visible {
+  background-color: var(--amber-glow-300);
+  transform: translateY(-1px);
+}
+
+.seed-feedback-msg {
+  font-family: var(--font-display);
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  min-height: 1.25em;
+}
+
+.seed-feedback-msg.is-error {
+  color: var(--terracotta-500);
+}
+
+body[data-battery-state="low"] .seed-feedback-msg.is-error {
+  color: var(--terracotta-400);
+}
+
+.seed-feedback-msg.is-success {
+  color: var(--leaf-green-600, #1f8f4c);
+}
+
+body[data-battery-state="low"] .seed-feedback-msg.is-success {
+  color: var(--leaf-green-300);
+}
+
+.seed-shelf-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 4px;
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.73rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.seed-packet-shelf {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 340px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.seed-empty-state {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  background-color: var(--bg-page);
+  border: 2px dashed var(--border-ink);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  text-align: center;
+}
+
+.seed-entry-card {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 11px;
+  align-items: center;
+  background-color: var(--bg-page);
+  border: 2px solid var(--border-ink);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  box-shadow: 0 2px 0 var(--border-ink);
+}
+
+.seed-entry-card.is-newly-planted {
+  animation: seedPacketSprout 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border-color: var(--leaf-green-500);
+}
+
+.seed-entry-art {
+  width: 52px;
+  height: 52px;
+  background: radial-gradient(circle at 50% 35%, var(--solar-charcoal-800), var(--solar-navy-950));
+  border: 2px solid var(--border-ink);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  flex-shrink: 0;
+}
+
+.seed-flower-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.seed-entry-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.seed-entry-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.seed-flower-badge {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--solar-navy-950);
+  background-color: var(--amber-glow-300);
+  border: 1.5px solid var(--border-ink);
+  padding: 1px 7px;
+  border-radius: var(--radius-pill);
+}
+
+.seed-entry-time {
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.seed-entry-message {
+  font-size: 0.92rem;
+  line-height: 1.42;
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* ==========================================================================
    3C. PROJECT 3: SOLAR LOG (ROTARY CHARGE DIAL & TELEMETRY)
    ========================================================================== */
 .solar-log-section {
@@ -1692,6 +2234,447 @@ body[data-battery-state="low"] .dial-pointer {
 }
 
 /* ==========================================================================
+   4. MILESTONE 5: FINAL SOLAR LOG ENTRY, BUILD STORY & CREDITS
+   ========================================================================== */
+.final-solar-log-section {
+  background: linear-gradient(
+    180deg,
+    var(--bg-page) 0%,
+    rgba(13, 21, 36, 0.14) 100%
+  );
+  padding-bottom: 52px;
+}
+
+body[data-battery-state="low"] .final-solar-log-section {
+  background: linear-gradient(
+    180deg,
+    var(--solar-navy-950) 0%,
+    #070c16 100%
+  );
+}
+
+.final-log-console {
+  background: linear-gradient(160deg, var(--solar-navy-950) 0%, var(--solar-navy-900) 60%, #111b2e 100%);
+  color: var(--sunlit-cream-50);
+  border: var(--border-width) solid var(--border-ink);
+  border-radius: var(--radius-lg);
+  padding: 24px 22px;
+  box-shadow: var(--shadow-tactile), inset 0 1px 0 rgba(255, 224, 130, 0.14);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* A. Restrained Shutdown Sequence Panel */
+.shutdown-sequence-panel {
+  background-color: rgba(10, 16, 28, 0.72);
+  border: 2px solid var(--solar-slate-700);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.shutdown-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-bottom: 10px;
+  border-bottom: 1.5px dashed rgba(184, 199, 224, 0.2);
+}
+
+.shutdown-chip-tag {
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-muted-on-dark);
+}
+
+.shutdown-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--amber-glow-300);
+  background-color: rgba(245, 158, 11, 0.14);
+  border: 1.5px solid rgba(245, 158, 11, 0.45);
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.shutdown-amber-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--amber-glow-500);
+  box-shadow: 0 0 6px var(--amber-glow-500);
+  animation: pulseGlow var(--anim-pulse-dur) ease-in-out infinite;
+}
+
+.final-log-console.is-settled .shutdown-amber-dot {
+  opacity: 0.55;
+  background-color: var(--terracotta-400);
+  box-shadow: 0 0 4px var(--terracotta-400);
+}
+
+.shutdown-stage-grid {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 18px;
+  align-items: center;
+}
+
+.resting-bitling-frame {
+  background: radial-gradient(circle at 50% 35%, #1c2b47 0%, #0a101c 80%);
+  border: 2px solid var(--solar-slate-700);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.resting-bitling-svg {
+  width: 100%;
+  max-width: 180px;
+  height: auto;
+  display: block;
+}
+
+.resting-unit-group {
+  transform: translateY(-4px);
+  transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.final-log-console.is-settled .resting-unit-group {
+  transform: translateY(2px);
+}
+
+.resting-antenna {
+  transform-origin: 78px 44px;
+  transform: rotate(-8deg);
+  transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.final-log-console.is-settled .resting-antenna {
+  transform: rotate(8deg) translateY(1px);
+}
+
+.resting-antenna-bulb,
+.resting-eye {
+  transition: opacity 1.1s ease;
+}
+
+.final-log-console.is-settled .resting-antenna-bulb {
+  opacity: 0.55;
+}
+
+.final-log-console.is-settled .resting-eye {
+  opacity: 0.78;
+}
+
+.dusk-star {
+  animation: pulseGlow var(--anim-pulse-dur) ease-in-out infinite;
+}
+
+.Shutdown-readout-col,
+.shutdown-readout-col {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  min-width: 0;
+}
+
+.shutdown-meter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.shutdown-meter-label {
+  color: var(--text-muted-on-dark);
+}
+
+.shutdown-meter-val {
+  color: var(--amber-glow-300);
+}
+
+.shutdown-charge-track {
+  width: 100%;
+  height: 12px;
+  background-color: #070b14;
+  border: 1.5px solid var(--solar-slate-700);
+  border-radius: var(--radius-pill);
+  padding: 2px;
+  overflow: hidden;
+}
+
+.shutdown-charge-fill {
+  height: 100%;
+  width: 44%;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--terracotta-500) 0%, var(--amber-glow-400) 100%);
+  box-shadow: 0 0 10px rgba(255, 194, 51, 0.5);
+  opacity: 0.95;
+  transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1), opacity 1.2s ease, box-shadow 1.2s ease;
+}
+
+.final-log-console.is-settled .shutdown-charge-fill {
+  width: 12%;
+  opacity: 0.58;
+  box-shadow: 0 0 5px rgba(245, 158, 11, 0.25);
+}
+
+.shutdown-monologue {
+  font-size: 0.93rem;
+  line-height: 1.52;
+  color: var(--sunlit-cream-100);
+}
+
+.goodnight-cue-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #070c16;
+  border: 1.5px solid rgba(255, 194, 51, 0.45);
+  border-left: 4px solid var(--amber-glow-400);
+  border-radius: var(--radius-sm);
+  padding: 10px 13px;
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--amber-glow-300);
+  opacity: 0.35;
+  transform: translateY(3px);
+  transition: opacity 0.9s ease 0.2s, transform 0.9s ease 0.2s, box-shadow 0.9s ease 0.2s;
+}
+
+.final-log-console.is-settled .goodnight-cue-box {
+  opacity: 1;
+  transform: translateY(0);
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.16);
+}
+
+.goodnight-prompt {
+  color: var(--leaf-green-400);
+  flex-shrink: 0;
+}
+
+.shutdown-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 2px;
+}
+
+.shutdown-replay-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 8px 15px;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--amber-glow-300);
+  background-color: var(--solar-charcoal-800);
+  border: 2px solid var(--solar-slate-700);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 2px 0 #060a12;
+  cursor: pointer;
+  transition: transform 0.14s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.shutdown-replay-btn:hover,
+.shutdown-replay-btn:focus-visible {
+  border-color: var(--amber-glow-400);
+  background-color: var(--solar-navy-900);
+  transform: translateY(-1px);
+}
+
+/* B & C. Story Behind the Build + Credits Lower Grid */
+.final-log-lower-grid {
+  display: grid;
+  grid-template-columns: 1.18fr 0.82fr;
+  gap: 18px;
+  align-items: stretch;
+}
+
+.build-story-chip {
+  background-color: var(--solar-charcoal-800);
+  border: 2px solid var(--solar-slate-700);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+
+.build-story-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 8px;
+  border-bottom: 1.5px dashed rgba(184, 199, 224, 0.2);
+}
+
+.build-story-addr {
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--leaf-green-300);
+  letter-spacing: 0.04em;
+}
+
+.build-story-title {
+  font-size: 1.32rem;
+  color: var(--amber-glow-300);
+  line-height: 1.22;
+}
+
+.build-story-prose {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: rgba(13, 21, 36, 0.65);
+  border: 1.5px solid rgba(184, 199, 224, 0.16);
+  border-radius: var(--radius-sm);
+  padding: 14px 15px;
+  font-size: 0.93rem;
+  line-height: 1.58;
+  color: var(--sunlit-cream-50);
+}
+
+.build-story-prose strong {
+  color: var(--amber-glow-300);
+}
+
+.final-credits-card {
+  background-color: rgba(13, 21, 36, 0.78);
+  border: 2px solid var(--solar-slate-700);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.final-credits-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 8px;
+  border-bottom: 1.5px dashed rgba(184, 199, 224, 0.2);
+}
+
+.credits-code {
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--terracotta-300);
+  letter-spacing: 0.04em;
+}
+
+.final-credits-title {
+  font-size: 1.24rem;
+  color: var(--sunlit-cream-50);
+  line-height: 1.22;
+}
+
+.credits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.credit-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(184, 199, 224, 0.16);
+}
+
+.credit-row:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.credit-row dt {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--amber-glow-300);
+}
+
+.credit-row dd {
+  font-size: 0.87rem;
+  line-height: 1.42;
+  color: var(--sunlit-cream-100);
+  overflow-wrap: anywhere;
+}
+
+.credit-editable-placeholder {
+  display: inline-block;
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--leaf-green-300) !important;
+  background-color: rgba(82, 214, 129, 0.12);
+  border: 1px dashed rgba(82, 214, 129, 0.55);
+  border-radius: 6px;
+  padding: 2px 7px;
+  margin-top: 2px;
+}
+
+/* D. Final Emotional Sign-off Banner */
+.final-log-signoff {
+  background: radial-gradient(circle at 50% 0%, rgba(255, 194, 51, 0.16), rgba(10, 16, 28, 0.9));
+  border: 2px solid var(--amber-glow-400);
+  border-radius: var(--radius-md);
+  padding: 18px 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 0 18px rgba(245, 158, 11, 0.15);
+}
+
+.final-signoff-telemetry {
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.73rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-muted-on-dark);
+}
+
+.final-emotional-line {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--amber-glow-300);
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 10px rgba(255, 194, 51, 0.32);
+}
+
+/* ==========================================================================
    FOOTER
    ========================================================================== */
 .site-footer {
@@ -1713,6 +2696,12 @@ body[data-battery-state="low"] .dial-pointer {
 .footer-meta {
   color: var(--text-muted-on-dark);
   font-size: 0.84rem;
+}
+
+.footer-brand {
+  color: var(--amber-glow-300);
+  font-family: var(--font-display);
+  font-size: 1rem;
 }
 
 /* ==========================================================================
@@ -1847,6 +2836,17 @@ body[data-battery-state="low"] .dial-pointer {
   }
 }
 
+@keyframes seedPacketSprout {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1861,8 +2861,21 @@ body[data-battery-state="low"] .dial-pointer {
   .bitling-body-group,
   .bitling-antenna,
   .antenna-aura,
-  .pulse-dot {
+  .pulse-dot,
+  .can-drip,
+  .seed-entry-card.is-newly-planted,
+  .shutdown-amber-dot,
+  .dusk-star {
     animation: none !important;
+  }
+
+  .resting-unit-group,
+  .resting-antenna,
+  .resting-antenna-bulb,
+  .resting-eye,
+  .shutdown-charge-fill,
+  .goodnight-cue-box {
+    transition: none !important;
   }
 }
 
@@ -1880,7 +2893,16 @@ body[data-battery-state="low"] .dial-pointer {
 .charge-hud-card,
 .solar-dial-console,
 .dial-control-panel,
-.solar-telemetry-strip {
+.solar-telemetry-strip,
+.side-quests-grid,
+.odometer-console-card,
+.seed-guestbook-card,
+.final-log-console,
+.shutdown-sequence-panel,
+.shutdown-stage-grid,
+.final-log-lower-grid,
+.build-story-chip,
+.final-credits-card {
   min-width: 0;
 }
 
@@ -1898,7 +2920,22 @@ body[data-battery-state="low"] .dial-pointer {
     grid-column: span 1;
   }
 
+  .side-quests-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
   .solar-dial-console {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .shutdown-stage-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .final-log-lower-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }
@@ -2006,6 +3043,7 @@ body[data-battery-state="low"] .dial-pointer {
 
   .section-block {
     padding: 30px 0;
+    scroll-margin-top: 118px;
   }
 
   .spec-card {
@@ -2149,6 +3187,32 @@ body[data-battery-state="low"] .dial-pointer {
     grid-template-columns: 1fr;
   }
 
+  .odometer-console-card,
+  .seed-guestbook-card {
+    padding: 16px 14px;
+  }
+
+  .odo-main-display {
+    padding: 11px 10px;
+    gap: 10px;
+  }
+
+  .odo-watering-can {
+    width: 60px;
+    height: 60px;
+    padding: 6px;
+  }
+
+  .odo-wheel {
+    width: 24px;
+    height: 32px;
+    font-size: 1.1rem;
+  }
+
+  .seed-submit-btn {
+    width: 100%;
+  }
+
   .solar-dial-console {
     padding: 16px 14px;
   }
@@ -2183,5 +3247,36 @@ body[data-battery-state="low"] .dial-pointer {
 
   .telemetry-item dd {
     text-align: left;
+  }
+
+  /* Milestone 5 Mobile Polish (390px) */
+  .final-log-console {
+    padding: 16px 14px;
+    gap: 16px;
+  }
+
+  .shutdown-sequence-panel,
+  .build-story-chip,
+  .final-credits-card {
+    padding: 14px 12px;
+  }
+
+  .build-story-prose {
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+
+  .goodnight-cue-box {
+    font-size: 0.77rem;
+    padding: 9px 10px;
+    gap: 6px;
+  }
+
+  .shutdown-replay-btn {
+    width: 100%;
+  }
+
+  .final-emotional-line {
+    font-size: 1.4rem;
   }
 }
