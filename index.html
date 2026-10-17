@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bitling — The Baby Robot Gardener | Low battery. Big dreams.</title>
+  <meta
+    name="description"
+    content="Interactive character portfolio for Bitling, a tiny solar-powered robot gardener growing pixel-art plants on a forgotten city rooftop."
+  />
+  <!-- Google Fonts: Fredoka (rounded/bubbly display) + Nunito (clean friendly body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,500;0,600;0,700;1,600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Subtle rooftop solar-grid backdrop -->
+  <div class="rooftop-bg-pattern" aria-hidden="true"></div>
+
+  <!-- Top Header / Navigation -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#top" class="brand-badge" aria-label="Bitling Home">
+        <span class="brand-antenna-dot" aria-hidden="true"></span>
+        <span class="brand-name">BITLING</span>
+        <span class="brand-unit">BTL-01</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary sections">
+        <a href="#character-sheet">Spec Sheet</a>
+        <a href="#garden-grid">Garden Grid</a>
+        <a href="#invented-species">Species</a>
+        <a href="#solar-log">Solar Log</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ==========================================
+         1. HERO / INTRO SECTION
+         ========================================== -->
+    <section class="hero-section" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow-pill">
+            <span class="pulse-dot" aria-hidden="true"></span>
+            <span>ROOFTOP SECTOR 07 // UNIT ONLINE</span>
+          </div>
+
+          <h1 id="hero-title" class="hero-title">
+            Hi, I’m <span class="title-highlight">Bitling</span>!
+          </h1>
+          <p class="hero-subtitle">The Baby Robot Gardener</p>
+
+          <p class="hero-tagline" aria-label="Character Tagline">
+            <span class="tagline-icon" aria-hidden="true">⚡</span>
+            “Low battery. Big dreams.”
+          </p>
+
+          <p class="hero-bio">
+            <em>*Beep-boop!*</em> I’m a pocket-sized, solar-powered caretaker tending a miniature
+            sanctuary of pixel-art flora high above the city streets. Give my LED visor a mood
+            check or help me water the rooftop planter beds below!
+          </p>
+
+          <!-- Interactive LED Eye Expression Switcher -->
+          <div class="expression-controls" role="group" aria-label="Change Bitling LED eye expression">
+            <span class="control-label">LED Visor Mood:</span>
+            <div class="expression-btn-row">
+              <button
+                type="button"
+                class="expr-btn is-active"
+                data-expression="happy"
+                aria-pressed="true"
+              >
+                <span class="expr-icon" aria-hidden="true">^‿^</span> Happy
+              </button>
+              <button
+                type="button"
+                class="expr-btn"
+                data-expression="sleepy"
+                aria-pressed="false"
+              >
+                <span class="expr-icon" aria-hidden="true">-‿-</span> Sleepy
+              </button>
+              <button
+                type="button"
+                class="expr-btn"
+                data-expression="low-battery"
+                aria-pressed="false"
+              >
+                <span class="expr-icon" aria-hidden="true">×‿×</span> Low-Battery
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bitling Character Illustration (Pure Inline SVG + CSS) -->
+        <div class="hero-art-wrap">
+          <div class="character-stage" id="bitling-stage" data-expression="happy">
+            <div class="chirp-bubble" id="bitling-chirp" role="status" aria-live="polite">
+              *Beep-boop!* Ready to garden! 🌱
+            </div>
+
+            <button
+              type="button"
+              class="bitling-svg-button"
+              id="bitling-poke-btn"
+              aria-label="Poke Bitling for a friendly robot chirp"
+              title="Click Bitling to say hi!"
+            >
+              <svg
+                class="bitling-svg"
+                viewBox="0 0 320 340"
+                xmlns="http://www.w3.org/2000/svg"
+                role="img"
+                aria-labelledby="bitling-svg-title bitling-svg-desc"
+              >
+                <title id="bitling-svg-title">Bitling the Baby Robot Gardener</title>
+                <desc id="bitling-svg-desc">
+                  A rounded solar-powered baby robot with a glowing antenna, navy solar panel cap,
+                  big soft amber-green LED eyes, dirt-smudged little hands, and a terracotta pot.
+                </desc>
+
+                <defs>
+                  <radialGradient id="antennaGlow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#ffe082" stop-opacity="1" />
+                    <stop offset="55%" stop-color="#ffc233" stop-opacity="0.65" />
+                    <stop offset="100%" stop-color="#ffc233" stop-opacity="0" />
+                  </radialGradient>
+
+                  <linearGradient id="solarPanelGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#22304a" />
+                    <stop offset="100%" stop-color="#0f1726" />
+                  </linearGradient>
+
+                  <linearGradient id="bodyShellGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#fcf9f2" />
+                    <stop offset="100%" stop-color="#e8dec8" />
+                  </linearGradient>
+
+                  <linearGradient id="terracottaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#e77c5a" />
+                    <stop offset="100%" stop-color="#b24324" />
+                  </linearGradient>
+                </defs>
+
+                <!-- Ground shadow on rooftop -->
+                <ellipse cx="160" cy="316" rx="96" ry="14" fill="rgba(15, 23, 38, 0.16)" />
+
+                <!-- Small Antenna -->
+                <g class="bitling-antenna">
+                  <circle
+                    class="antenna-aura"
+                    cx="160"
+                    cy="34"
+                    r="22"
+                    fill="url(#antennaGlow)"
+                  />
+                  <line
+                    x1="160"
+                    y1="42"
+                    x2="160"
+                    y2="74"
+                    stroke="#334768"
+                    stroke-width="7"
+                    stroke-linecap="round"
+                  />
+                  <circle
+                    class="antenna-bulb"
+                    cx="160"
+                    cy="34"
+                    r="11"
+                    fill="#ffc233"
+                    stroke="#162136"
+                    stroke-width="3.5"
+                  />
+                  <circle cx="156" cy="30" r="3.2" fill="#fff8dc" />
+                </g>
+
+                <!-- Main Floating/Bobbing Robot Group -->
+                <g class="bitling-body-group">
+                  <!-- Little Rounded Feet -->
+                  <rect
+                    x="104"
+                    y="276"
+                    width="42"
+                    height="28"
+                    rx="14"
+                    fill="#22304a"
+                    stroke="#0f1726"
+                    stroke-width="4"
+                  />
+                  <rect
+                    x="174"
+                    y="276"
+                    width="42"
+                    height="28"
+                    rx="14"
+                    fill="#22304a"
+                    stroke="#0f1726"
+                    stroke-width="4"
+                  />
+                  <!-- Dirt smudges on boots -->
+                  <ellipse cx="122" cy="295" rx="11" ry="4.5" fill="#6b4c3b" opacity="0.75" />
+                  <ellipse cx="196" cy="295" rx="12" ry="4.5" fill="#6b4c3b" opacity="0.75" />
+
+                  <!-- Rounded Lower Torso / Belly -->
+                  <rect
+                    x="84"
+                    y="194"
+                    width="152"
+                    height="94"
+                    rx="44"
+                    fill="url(#bodyShellGrad)"
+                    stroke="#162136"
+                    stroke-width="4.5"
+                  />
+
+                  <!-- Belly Solar Charge Meter Plate -->
+                  <rect
+                    x="116"
+                    y="214"
+                    width="88"
+                    height="46"
+                    rx="14"
+                    fill="#162136"
+                    stroke="#334768"
+                    stroke-width="3"
+                  />
+                  <!-- Charge Bars -->
+                  <rect class="charge-bar bar-1" x="126" y="224" width="16" height="26" rx="4" fill="#2eb865" />
+                  <rect class="charge-bar bar-2" x="148" y="224" width="16" height="26" rx="4" fill="#52d681" />
+                  <rect class="charge-bar bar-3" x="170" y="224" width="16" height="26" rx="4" fill="#ffc233" />
+                  <circle cx="195" cy="237" r="3.5" fill="#ffc233" />
+
+                  <!-- Rounded Head / Upper Chassis -->
+                  <rect
+                    x="64"
+                    y="72"
+                    width="192"
+                    height="140"
+                    rx="66"
+                    fill="url(#bodyShellGrad)"
+                    stroke="#162136"
+                    stroke-width="4.5"
+                  />
+
+                  <!-- Solar-Panel Cap on Head Dome -->
+                  <path
+                    d="M84 102 C84 79, 116 68, 160 68 C204 68, 236 79, 236 102 L226 108 L94 108 Z"
+                    fill="url(#solarPanelGrad)"
+                    stroke="#162136"
+                    stroke-width="4"
+                    stroke-linejoin="round"
+                  />
+                  <!-- Solar cell grid lines -->
+                  <line x1="128" y1="71" x2="122" y2="108" stroke="#4cc9f0" stroke-width="2" opacity="0.55" />
+                  <line x1="160" y1="68" x2="160" y2="108" stroke="#4cc9f0" stroke-width="2" opacity="0.55" />
+                  <line x1="192" y1="71" x2="198" y2="108" stroke="#4cc9f0" stroke-width="2" opacity="0.55" />
+                  <line x1="92" y1="90" x2="228" y2="90" stroke="#4cc9f0" stroke-width="2" opacity="0.45" />
+
+                  <!-- Side Ear Bolts / Audio Beepers -->
+                  <rect
+                    x="50"
+                    y="126"
+                    width="16"
+                    height="36"
+                    rx="8"
+                    fill="#d45d3a"
+                    stroke="#162136"
+                    stroke-width="4"
+                  />
+                  <rect
+                    x="254"
+                    y="126"
+                    width="16"
+                    height="36"
+                    rx="8"
+                    fill="#d45d3a"
+                    stroke="#162136"
+                    stroke-width="4"
+                  />
+
+                  <!-- Dark Rounded Face Visor -->
+                  <rect
+                    x="84"
+                    y="104"
+                    width="152"
+                    height="88"
+                    rx="40"
+                    fill="#0f1726"
+                    stroke="#22304a"
+                    stroke-width="4"
+                  />
+                  <!-- Subtle screen reflection -->
+                  <path
+                    d="M102 114 Q160 108 214 114"
+                    stroke="rgba(255,255,255,0.14)"
+                    stroke-width="4"
+                    stroke-linecap="round"
+                    fill="none"
+                  />
+
+                  <!-- Cheek Blush LEDs -->
+                  <ellipse class="cheek-led" cx="104" cy="166" rx="9" ry="5" fill="#e77c5a" opacity="0.7" />
+                  <ellipse class="cheek-led" cx="216" cy="166" rx="9" ry="5" fill="#e77c5a" opacity="0.7" />
+
+                  <!-- =========================================
+                       LED EYES: 3 Expressions (Happy / Sleepy / Low-Battery)
+                       ========================================= -->
+                  <!-- 1. HAPPY EYES (Default) -->
+                  <g class="eyes-layer eyes-happy">
+                    <!-- Left big soft LED eye -->
+                    <rect
+                      x="104"
+                      y="124"
+                      width="36"
+                      height="34"
+                      rx="16"
+                      fill="#52d681"
+                    />
+                    <circle cx="115" cy="135" r="5.5" fill="#fcf9f2" />
+                    <circle cx="129" cy="146" r="2.8" fill="#fcf9f2" />
+
+                    <!-- Right big soft LED eye -->
+                    <rect
+                      x="180"
+                      y="124"
+                      width="36"
+                      height="34"
+                      rx="16"
+                      fill="#52d681"
+                    />
+                    <circle cx="191" cy="135" r="5.5" fill="#fcf9f2" />
+                    <circle cx="205" cy="146" r="2.8" fill="#fcf9f2" />
+
+                    <!-- Happy chirpy pixel mouth -->
+                    <path
+                      d="M148 164 Q160 175 172 164"
+                      fill="none"
+                      stroke="#52d681"
+                      stroke-width="4.5"
+                      stroke-linecap="round"
+                    />
+                  </g>
+
+                  <!-- 2. SLEEPY EYES -->
+                  <g class="eyes-layer eyes-sleepy">
+                    <!-- Left sleepy curved arc -->
+                    <path
+                      d="M104 144 Q122 156 140 144"
+                      fill="none"
+                      stroke="#ffe082"
+                      stroke-width="6"
+                      stroke-linecap="round"
+                    />
+                    <!-- Right sleepy curved arc -->
+                    <path
+                      d="M180 144 Q198 156 216 144"
+                      fill="none"
+                      stroke="#ffe082"
+                      stroke-width="6"
+                      stroke-linecap="round"
+                    />
+                    <!-- Sleepy tiny 'o' mouth -->
+                    <circle
+                      cx="160"
+                      cy="167"
+                      r="5"
+                      fill="none"
+                      stroke="#ffe082"
+                      stroke-width="3.5"
+                    />
+                    <!-- Floating Zzz on visor corner -->
+                    <text
+                      x="208"
+                      y="125"
+                      fill="#ffe082"
+                      font-family="Fredoka, sans-serif"
+                      font-size="13"
+                      font-weight="700"
+                    >
+                      zZz
+                    </text>
+                  </g>
+
+                  <!-- 3. LOW-BATTERY EYES -->
+                  <g class="eyes-layer eyes-low-battery">
+                    <!-- Left half-drooped flickering amber eye -->
+                    <rect
+                      x="104"
+                      y="132"
+                      width="36"
+                      height="24"
+                      rx="10"
+                      fill="#f59e0b"
+                    />
+                    <line x1="102" y1="132" x2="142" y2="138" stroke="#0f1726" stroke-width="5" />
+                    <!-- Right half-drooped flickering amber eye -->
+                    <rect
+                      x="180"
+                      y="132"
+                      width="36"
+                      height="24"
+                      rx="10"
+                      fill="#f59e0b"
+                    />
+                    <line x1="218" y1="132" x2="178" y2="138" stroke="#0f1726" stroke-width="5" />
+                    <!-- Wavy low-charge mouth -->
+                    <path
+                      d="M145 168 Q152 162 160 168 T175 168"
+                      fill="none"
+                      stroke="#f59e0b"
+                      stroke-width="4"
+                      stroke-linecap="round"
+                    />
+                  </g>
+
+                  <!-- Left & Right Little Arms with Dirt-Smudged Hands -->
+                  <!-- Left Arm -->
+                  <g class="bitling-arm-left">
+                    <path
+                      d="M82 204 C52 212, 46 244, 70 258"
+                      fill="none"
+                      stroke="#334768"
+                      stroke-width="14"
+                      stroke-linecap="round"
+                    />
+                    <!-- Left Rounded Mitten Hand -->
+                    <circle
+                      cx="74"
+                      cy="260"
+                      r="17"
+                      fill="#fcf9f2"
+                      stroke="#162136"
+                      stroke-width="4"
+                    />
+                    <!-- Dirt smudges on left hand -->
+                    <ellipse cx="77" cy="264" rx="9" ry="6" fill="#6b4c3b" opacity="0.85" />
+                    <circle cx="67" cy="256" r="3.5" fill="#4d3427" opacity="0.8" />
+                  </g>
+
+                  <!-- Right Arm holding a tiny terracotta sprout pot -->
+                  <g class="bitling-arm-right">
+                    <path
+                      d="M238 204 C268 212, 274 244, 250 258"
+                      fill="none"
+                      stroke="#334768"
+                      stroke-width="14"
+                      stroke-linecap="round"
+                    />
+                    <!-- Right Rounded Mitten Hand -->
+                    <circle
+                      cx="246"
+                      cy="260"
+                      r="17"
+                      fill="#fcf9f2"
+                      stroke="#162136"
+                      stroke-width="4"
+                    />
+                    <!-- Dirt smudges on right hand -->
+                    <ellipse cx="242" cy="265" rx="9" ry="5.5" fill="#6b4c3b" opacity="0.85" />
+                    <circle cx="253" cy="257" r="3.5" fill="#4d3427" opacity="0.8" />
+                  </g>
+
+                  <!-- Tiny Terracotta Seedling Pot in front of Bitling -->
+                  <g class="held-pot" transform="translate(230, 225)">
+                    <!-- Pixel Sprout Leaves -->
+                    <rect x="23" y="4" width="6" height="14" fill="#2eb865" />
+                    <rect x="13" y="0" width="12" height="8" rx="2" fill="#52d681" />
+                    <rect x="27" y="-2" width="12" height="8" rx="2" fill="#2eb865" />
+                    <!-- Pot Rim & Body -->
+                    <rect
+                      x="8"
+                      y="16"
+                      width="36"
+                      height="9"
+                      rx="3"
+                      fill="url(#terracottaGrad)"
+                      stroke="#162136"
+                      stroke-width="3"
+                    />
+                    <polygon
+                      points="12,25 40,25 36,48 16,48"
+                      fill="url(#terracottaGrad)"
+                      stroke="#162136"
+                      stroke-width="3"
+                      stroke-linejoin="round"
+                    />
+                  </g>
+                </g>
+              </svg>
+            </button>
+
+            <p class="stage-caption">
+              Tap Bitling for a friendly <em>beep-boop</em> or switch visor moods!
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         2. THE 5-POINT CHARACTER SHEET
+         ========================================== -->
+    <section id="character-sheet" class="section-block character-sheet-section" aria-labelledby="sheet-heading">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-kicker">FIELD DOSSIER // 5-POINT SPEC</span>
+          <h2 id="sheet-heading" class="section-title">Character Sheet</h2>
+          <p class="section-desc">
+            Official rooftop registration record for autonomous gardening unit BTL-01.
+          </p>
+        </div>
+
+        <dl class="spec-sheet-grid">
+          <!-- 1. Name -->
+          <div class="spec-card">
+            <dt class="spec-label">
+              <span class="spec-num">01</span> Name
+            </dt>
+            <dd class="spec-value spec-value-highlight">
+              Bitling <span class="spec-sub-badge">Unit BTL-01</span>
+            </dd>
+          </div>
+
+          <!-- 2. What they are -->
+          <div class="spec-card">
+            <dt class="spec-label">
+              <span class="spec-num">02</span> What They Are
+            </dt>
+            <dd class="spec-value">
+              A tiny solar-powered robot with a rounded body, big soft LED eyes that shift expression
+              (happy, sleepy, low-battery), a small bobbing antenna, dirt-smudged little hands, and a
+              chirpy <em>beep-boop</em> voice.
+            </dd>
+          </div>
+
+          <!-- 3. What they do -->
+          <div class="spec-card">
+            <dt class="spec-label">
+              <span class="spec-num">03</span> What They Do
+            </dt>
+            <dd class="spec-value">
+              Grows and cross-pollinates resilient pixel-art plant species in a sun-drenched rooftop
+              terracotta garden.
+            </dd>
+          </div>
+
+          <!-- 4. Their story -->
+          <div class="spec-card spec-card-wide">
+            <dt class="spec-label">
+              <span class="spec-num">04</span> Their Story
+            </dt>
+            <dd class="spec-value">
+              Built from spare parts by autonomous garden drones that were themselves forgotten on an
+              overgrown city roof. Long after the old maintenance fleet powered down, Bitling keeps
+              waking up with the morning sun to water every last planter box.
+            </dd>
+          </div>
+
+          <!-- 5. Tagline -->
+          <div class="spec-card spec-card-tagline">
+            <dt class="spec-label">
+              <span class="spec-num">05</span> Tagline
+            </dt>
+            <dd class="spec-value">
+              <blockquote class="spec-tagline-quote">“Low battery. Big dreams.”</blockquote>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         3A. SHOWCASE PROJECT 1: THE GARDEN GRID
+         ========================================== -->
+    <section id="garden-grid" class="section-block garden-section" aria-labelledby="garden-heading">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-kicker">PROJECT 01 // INTERACTIVE PLANTER BED</span>
+          <h2 id="garden-heading" class="section-title">The Garden Grid</h2>
+          <p class="section-desc">
+            Tap any terracotta tile to water it and advance its pixel plant through three growth
+            stages: <strong>Seed → Sprout → Bloom</strong>. Tap a full bloom to harvest seeds and
+            replant!
+          </p>
+        </div>
+
+        <div class="garden-console">
+          <!-- Status & Controls Bar -->
+          <div class="garden-hud">
+            <div class="garden-stats" aria-live="polite">
+              <span class="stat-pill">
+                <span class="stat-dot dot-seed"></span>
+                Seeds: <strong id="count-seed">9</strong>
+              </span>
+              <span class="stat-pill">
+                <span class="stat-dot dot-sprout"></span>
+                Sprouts: <strong id="count-sprout">0</strong>
+              </span>
+              <span class="stat-pill">
+                <span class="stat-dot dot-bloom"></span>
+                Blooms: <strong id="count-bloom">0</strong>
+              </span>
+            </div>
+
+            <div class="garden-actions">
+              <button type="button" class="action-btn btn-water-all" id="water-all-btn">
+                💧 Water All (+1 Stage)
+              </button>
+              <button type="button" class="action-btn btn-reset-garden" id="reset-garden-btn">
+                🌱 Replant Seeds
+              </button>
+            </div>
+          </div>
+
+          <!-- 3x3 Interactive Terracotta Planter Grid -->
+          <div
+            class="planter-grid"
+            id="planter-grid"
+            role="group"
+            aria-label="3 by 3 interactive rooftop garden grid"
+          >
+            <!-- Populated and enhanced by script.js, with semantic fallback structure -->
+          </div>
+
+          <!-- Bitling's Live Watering Log -->
+          <div class="garden-log-bar" id="garden-status-log" role="status" aria-live="polite">
+            <span class="log-badge">BITLING LOG:</span>
+            <span class="log-message" id="garden-log-text">
+              All 9 rooftop plots are planted with fresh pixel seeds. Tap any tile to water!
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         3B. SHOWCASE PROJECT 2: INVENTED SPECIES
+         ========================================== -->
+    <section id="invented-species" class="section-block species-section" aria-labelledby="species-heading">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-kicker">PROJECT 02 // ROOFTOP BOTANICAL CODEX</span>
+          <h2 id="species-heading" class="section-title">Invented Species</h2>
+          <p class="section-desc">
+            Five hardy, half-botanical, half-electronic pixel-art specimens cultivated by Bitling in
+            reclaimed rooftop containers.
+          </p>
+        </div>
+
+        <div class="species-gallery">
+          <!-- Species 1: Volt-Daisy -->
+          <article class="species-card">
+            <div class="species-card-top">
+              <span class="species-code">SP-01 // HELIO-VOLT</span>
+              <span class="species-rarity">Full Sun</span>
+            </div>
+            <div class="species-art-frame" aria-hidden="true">
+              <svg class="pixel-plant-svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
+                <!-- Terracotta pot -->
+                <rect x="4" y="11" width="8" height="2" fill="#e77c5a" />
+                <rect x="5" y="13" width="6" height="3" fill="#d45d3a" />
+                <!-- Stem & leaves -->
+                <rect x="7" y="7" width="2" height="4" fill="#2eb865" />
+                <rect x="5" y="8" width="2" height="2" fill="#52d681" />
+                <rect x="9" y="9" width="2" height="2" fill="#52d681" />
+                <!-- Electric amber/white daisy petals -->
+                <rect x="6" y="2" width="4" height="2" fill="#ffe082" />
+                <rect x="6" y="6" width="4" height="2" fill="#ffe082" />
+                <rect x="4" y="4" width="2" height="2" fill="#ffc233" />
+                <rect x="10" y="4" width="2" height="2" fill="#ffc233" />
+                <!-- Glowing cyan core -->
+                <rect x="6" y="4" width="4" height="2" fill="#4cc9f0" />
+              </svg>
+            </div>
+            <h3 class="species-name">Volt-Daisy</h3>
+            <p class="species-flavor">
+              Its crisp yellow petals hum with static electricity and pivot toward the nearest Wi-Fi
+              router whenever clouds hide the sun.
+            </p>
+          </article>
+
+          <!-- Species 2: Copper-Cap Succulent -->
+          <article class="species-card">
+            <div class="species-card-top">
+              <span class="species-code">SP-02 // CRASSULA-CU</span>
+              <span class="species-rarity">Drought Proof</span>
+            </div>
+            <div class="species-art-frame" aria-hidden="true">
+              <svg class="pixel-plant-svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
+                <!-- Terracotta pot -->
+                <rect x="4" y="11" width="8" height="2" fill="#e77c5a" />
+                <rect x="5" y="13" width="6" height="3" fill="#d45d3a" />
+                <!-- Plump layered jade rosette -->
+                <rect x="6" y="5" width="4" height="6" fill="#2eb865" />
+                <rect x="4" y="7" width="2" height="4" fill="#52d681" />
+                <rect x="10" y="7" width="2" height="4" fill="#52d681" />
+                <rect x="5" y="6" width="2" height="3" fill="#1f8f4c" />
+                <rect x="9" y="6" width="2" height="3" fill="#1f8f4c" />
+                <!-- Copper-tipped crown -->
+                <rect x="6" y="3" width="4" height="2" fill="#d45d3a" />
+                <rect x="7" y="2" width="2" height="1" fill="#ffc233" />
+              </svg>
+            </div>
+            <h3 class="species-name">Copper-Cap Succulent</h3>
+            <p class="species-flavor">
+              Drinks mineral runoff from rusty air-conditioning vents and stores up to three
+              millivolts of backup charge in its plump jade leaves.
+            </p>
+          </article>
+
+          <!-- Species 3: Chime-Fern -->
+          <article class="species-card">
+            <div class="species-card-top">
+              <span class="species-code">SP-03 // SONIC-FROND</span>
+              <span class="species-rarity">Breeze Lover</span>
+            </div>
+            <div class="species-art-frame" aria-hidden="true">
+              <svg class="pixel-plant-svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
+                <!-- Terracotta pot -->
+                <rect x="4" y="11" width="8" height="2" fill="#e77c5a" />
+                <rect x="5" y="13" width="6" height="3" fill="#d45d3a" />
+                <!-- Arching pixel fern fronds -->
+                <rect x="7" y="4" width="2" height="7" fill="#1f8f4c" />
+                <rect x="5" y="5" width="2" height="1" fill="#52d681" />
+                <rect x="9" y="5" width="2" height="1" fill="#52d681" />
+                <rect x="4" y="7" width="3" height="1" fill="#2eb865" />
+                <rect x="9" y="7" width="3" height="1" fill="#2eb865" />
+                <rect x="3" y="9" width="4" height="1" fill="#52d681" />
+                <rect x="9" y="9" width="4" height="1" fill="#52d681" />
+                <!-- Hanging bell droplets -->
+                <rect x="3" y="10" width="1" height="1" fill="#4cc9f0" />
+                <rect x="12" y="10" width="1" height="1" fill="#4cc9f0" />
+                <rect x="7" y="2" width="2" height="2" fill="#4cc9f0" />
+              </svg>
+            </div>
+            <h3 class="species-name">Chime-Fern</h3>
+            <p class="species-flavor">
+              Its crystalline fronds chime in soft 8-bit arpeggios whenever an evening updraft sweeps
+              across the rooftop parapet.
+            </p>
+          </article>
+
+          <!-- Species 4: Lantern-Berries -->
+          <article class="species-card">
+            <div class="species-card-top">
+              <span class="species-code">SP-04 // LUMEN-BACCA</span>
+              <span class="species-rarity">Nocturnal Glow</span>
+            </div>
+            <div class="species-art-frame" aria-hidden="true">
+              <svg class="pixel-plant-svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
+                <!-- Terracotta pot -->
+                <rect x="4" y="11" width="8" height="2" fill="#e77c5a" />
+                <rect x="5" y="13" width="6" height="3" fill="#d45d3a" />
+                <!-- Branched woody stem & leaves -->
+                <rect x="7" y="4" width="2" height="7" fill="#6b4c3b" />
+                <rect x="5" y="5" width="2" height="1" fill="#2eb865" />
+                <rect x="9" y="6" width="3" height="1" fill="#2eb865" />
+                <rect x="4" y="8" width="3" height="1" fill="#1f8f4c" />
+                <!-- Glowing amber berry clusters -->
+                <rect x="4" y="5" width="2" height="2" fill="#ffc233" />
+                <rect x="11" y="7" width="2" height="2" fill="#ffc233" />
+                <rect x="3" y="9" width="2" height="2" fill="#ffe082" />
+                <rect x="7" y="2" width="2" height="2" fill="#ffe082" />
+              </svg>
+            </div>
+            <h3 class="species-name">Lantern-Berries</h3>
+            <p class="species-flavor">
+              Soaks up golden sunset rays all afternoon, then glows like tiny amber LEDs at dusk to
+              guide lost night-shift moths.
+            </p>
+          </article>
+
+          <!-- Species 5: Rust-Moss Clover -->
+          <article class="species-card">
+            <div class="species-card-top">
+              <span class="species-code">SP-05 // OXIDE-TRIFOL</span>
+              <span class="species-rarity">Lucky Find</span>
+            </div>
+            <div class="species-art-frame" aria-hidden="true">
+              <svg class="pixel-plant-svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
+                <!-- Terracotta pot -->
+                <rect x="4" y="11" width="8" height="2" fill="#e77c5a" />
+                <rect x="5" y="13" width="6" height="3" fill="#d45d3a" />
+                <!-- Cushion of moss -->
+                <rect x="4" y="9" width="8" height="2" fill="#1f8f4c" />
+                <!-- 4-leaf pixel clover -->
+                <rect x="7" y="6" width="2" height="3" fill="#2eb865" />
+                <rect x="5" y="4" width="2" height="2" fill="#52d681" />
+                <rect x="9" y="4" width="2" height="2" fill="#52d681" />
+                <rect x="5" y="7" width="2" height="2" fill="#2eb865" />
+                <rect x="9" y="7" width="2" height="2" fill="#2eb865" />
+                <!-- Tiny rust-orange dew specks -->
+                <rect x="7" y="5" width="2" height="2" fill="#e77c5a" />
+              </svg>
+            </div>
+            <h3 class="species-name">Rust-Moss Clover</h3>
+            <p class="species-flavor">
+              Sprouts exclusively inside forgotten hexagonal bolt sockets and smells faintly of warm
+              pine resin and fresh rainwater.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         3C. SHOWCASE PROJECT 3: SOLAR LOG (SHELL ONLY FOR MILESTONE 1)
+         ========================================== -->
+    <section id="solar-log" class="section-block solar-log-section" aria-labelledby="solar-log-heading">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-kicker">PROJECT 03 // PHOTOVOLTAIC TELEMETRY</span>
+          <h2 id="solar-log-heading" class="section-title">Solar Log</h2>
+          <p class="section-desc">
+            Rooftop daylight recorder and battery charge diagnostics for Unit BTL-01.
+          </p>
+        </div>
+
+        <!-- Milestone 1 Shell: ready for Milestone 3 day/night battery hookup -->
+        <div class="solar-log-shell">
+          <div class="solar-shell-badge">
+            <span class="shell-dot" aria-hidden="true"></span>
+            <span>SOLAR TELEMETRY SHELL // STANDBY</span>
+          </div>
+          <p class="solar-shell-note">
+            Photovoltaic sensor array aligned with Rooftop Sector 07. Day/night cycle controls and
+            live battery level telemetry will dock into this module in Milestone 3.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-brand">
+        <strong>Bitling (Unit BTL-01)</strong> — “Low battery. Big dreams.”
+      </p>
+      <p class="footer-meta">
+        Crafted for haX.baby’s <em>Baby’s First Website</em> Hackathon • Track 2 Original Character
+      </p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
